@@ -6,25 +6,48 @@ import './homescreen.dart';
 import './textfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class loginscreen extends StatelessWidget {
+import 'signupscreen.dart';
+
+class Loginscreen extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: LoginForm(),
+      );
+  }
+}
+
+class LoginFormState extends State<LoginForm> {
+  final _formKey = GlobalKey<FormState>();
+  final loginController = TextEditingController();
   final ImageProvider youreawakeblur;
   final VoidCallback maakaccountaan;
   final VoidCallback loginUser;
   final VoidCallback wachtwoordInput;
   final VoidCallback usernameInput;
-  loginscreen({
-    Key key,
+  LoginFormState({
     this.youreawakeblur = const AssetImage('assets/images/heythereblur.jpg'),
     this.maakaccountaan,
     this.loginUser,
     this.wachtwoordInput,
     this.usernameInput,
-  }) : super(key: key);
+  });
+  @override
+  void initState(){
+    super.initState();
+  }
+  @override
+  void dispose(){
+    loginController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffffffff),
-      body: Stack(
+    String username;
+    String password;
+    return Form(
+      key: _formKey,
+      child: Stack(
         children: <Widget>[
           Pinned.fromSize(
             bounds: Rect.fromLTWH(-45.0, -17.0, 450.0, 675.0),
@@ -53,7 +76,7 @@ class loginscreen extends StatelessWidget {
             fixedHeight: true,
             child:
                 // Adobe XD layer: 'BottomBar' (group)
-                GestureDetector(
+            GestureDetector(
               onTap: () => maakaccountaan?.call(),
               child: PageLink(
                 links: [
@@ -61,9 +84,7 @@ class loginscreen extends StatelessWidget {
                     transition: LinkTransition.Fade,
                     ease: Curves.easeOut,
                     duration: 0.3,
-                    pageBuilder: () => signupscreen(
-                      youreawakeblur:
-                          const AssetImage('assets/images/heythereblur.jpg'),
+                    pageBuilder: () => Signupscreen(
                     ),
                   ),
                 ],
@@ -78,20 +99,20 @@ class loginscreen extends StatelessWidget {
                       pinBottom: true,
                       child:
                           // Adobe XD layer: 'rectangle-17' (shape)
-                          SvgPicture.string(
+                      SvgPicture.string(
                         _svg_25w5dc,
                         allowDrawingOutsideViewBox: true,
                         fit: BoxFit.fill,
                       ),
                     ),
                     Pinned.fromSize(
-                      bounds: Rect.fromLTWH(58.0, 13.0, 244.0, 16.0),
+                      bounds: Rect.fromLTWH(58.0, 13.0, 260.0, 35.0),
                       size: Size(375.0, 42.0),
                       fixedWidth: true,
                       fixedHeight: true,
                       child:
                           // Adobe XD layer: 'Simon' (text)
-                          Text(
+                      Text(
                         'Geen account? Maak hier een account aan!',
                         style: TextStyle(
                           fontFamily: 'Lato',
@@ -107,7 +128,7 @@ class loginscreen extends StatelessWidget {
             ),
           ),
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(196.0, 452.0, 133.0, 16.0),
+            bounds: Rect.fromLTWH(180.0, 452.0, 142.0, 16.0),
             size: Size(360.0, 640.0),
             pinRight: true,
             fixedWidth: true,
@@ -121,31 +142,36 @@ class loginscreen extends StatelessWidget {
                 fontSize: 13,
                 color: const Color(0xa6ffffff),
               ),
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.center,
             ),
           ),
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(49.0, 435.0, 100.0, 50.0),
+            bounds: Rect.fromLTWH(50.0, 435.0, 100.0, 50.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             fixedWidth: true,
             fixedHeight: true,
             child:
                 // Adobe XD layer: 'Login' (group)
-                GestureDetector(
-              onTap: () => loginUser?.call(),
+            FloatingActionButton(
+              onPressed: () {
+                if(_formKey.currentState.validate()){
+                  Scaffold
+                  .of(context)
+                  .showSnackBar(SnackBar(content: Text(username + " " + password),),);
+                }
+              },
               child: Stack(
                 children: <Widget>[
                   Pinned.fromSize(
                     bounds: Rect.fromLTWH(0.0, 0.0, 100.0, 50.0),
                     size: Size(100.0, 50.0),
                     pinLeft: true,
-                    pinRight: true,
-                    pinTop: true,
-                    pinBottom: true,
+                    fixedWidth: true,
+                    // fixedHeight: true,
                     child:
                         // Adobe XD layer: 'rectangle-13' (shape)
-                        SvgPicture.string(
+                    SvgPicture.string(
                       _svg_bcy0mj,
                       allowDrawingOutsideViewBox: true,
                       fit: BoxFit.fill,
@@ -174,125 +200,49 @@ class loginscreen extends StatelessWidget {
             ),
           ),
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(48.5, 325.0, 280.0, 59.5),
+            bounds: Rect.fromLTWH(45.0, 325.0, 300.0, 74.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
-            pinRight: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'password field' (group)
-                GestureDetector(
-              onTap: () => wachtwoordInput?.call(),
-              child: Stack(
-                children: <Widget>[
-                  Pinned.fromSize(
-                    bounds: Rect.fromLTWH(0.5, 0.0, 108.0, 17.0),
-                    size: Size(280.0, 59.5),
-                    pinLeft: true,
-                    pinTop: true,
-                    fixedWidth: true,
-                    fixedHeight: true,
-                    child:
-                        // Adobe XD layer: 'Pwd field' (text)
-                        Text(
-                      'WACHTWOORD',
-                      style: TextStyle(
-                        fontFamily: 'Lato',
-                        fontSize: 14,
-                        color: const Color(0xffffffff),
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Pinned.fromSize(
-                    bounds: Rect.fromLTWH(0.0, 59.5, 280.0, 1.0),
-                    size: Size(280.0, 59.5),
-                    pinLeft: true,
-                    pinRight: true,
-                    pinBottom: true,
-                    fixedHeight: true,
-                    child:
-                        // Adobe XD layer: 'line-7' (shape)
-                        SvgPicture.string(
-                      _svg_t77q38,
-                      allowDrawingOutsideViewBox: true,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  Pinned.fromSize(
-                    bounds: Rect.fromLTWH(0.5, 40.0, 119.0, 10.0),
-                    size: Size(280.0, 59.5),
-                    pinLeft: true,
-                    fixedWidth: true,
-                    fixedHeight: true,
-                    child:
-                        // Adobe XD layer: 'Pwd placeholder' (none)
-                        SingleChildScrollView(
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: 7,
-                        runSpacing: 22,
-                        children: [{}, {}, {}, {}, {}, {}, {}, {}].map((map) {
-                          return
-                              // Adobe XD layer: 'group' (group)
-                              SizedBox(
-                            width: 8.0,
-                            height: 8.0,
-                            child: Stack(
-                              children: <Widget>[
-                                // Adobe XD layer: 'ellipse-8' (shape)
-                                Container(
-                                  width: 8.0,
-                                  height: 8.0,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.elliptical(9999.0, 9999.0)),
-                                    color: const Color(0xa7ffffff),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(23.5, 507.0, 280.0, 59.5),
-            size: Size(360.0, 640.0),
-            pinLeft: true,
-            pinBottom: true,
             fixedWidth: true,
             fixedHeight: true,
             child:
-                // Adobe XD layer: 'username field' (group)
-            TextFormField(
-              cursorColor: Theme.of(context).cursorColor,
-              initialValue: 'Input text',
-              maxLength: 20,
-              decoration: InputDecoration(
-                icon: Icon(Icons.favorite),
-                labelStyle: TextStyle(
-                  color: Color(0x0000000),
+              TextFormField(
+                validator: (value){
+                  if(value != 'martijn'){
+                    return 'Vul a.u.b iets in';
+
+
+
+
+
+
+
+
+
+                    //
+                  } else {
+                    username = value;
+                    return null;
+                  }
+                },
+                cursorColor: Theme.of(context).cursorColor,
+                style: TextStyle(
+                  color: Color(0xFFFFFFFF),
                 ),
-                hintText: 'Username',
-                hintStyle: TextStyle(
-                  color: Color(0xFF6200EE),
-                ),
-                helperText: 'Helper text',
-                suffixIcon: Icon(
-                  Icons.check_circle,
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF6200EE)),
+                initialValue: '',
+                maxLength: 20,
+                decoration: InputDecoration(
+                  labelStyle: TextStyle(
+                    color: Color(0xffffffff),
+                  ),
+                  labelText: "Password",
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xff111111)),
+                  ),
                 ),
               ),
             ),
-          ),
+          // Adobe XD layer: 'Pwd field' (text)
           Pinned.fromSize(
             bounds: Rect.fromLTWH(46.0, 139.0, 92.0, 48.0),
             size: Size(360.0, 640.0),
@@ -342,21 +292,60 @@ class loginscreen extends StatelessWidget {
             ),
           ),
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(16.0, 228.0, 328.0, 74.0),
+            bounds: Rect.fromLTWH(45.0, 228.0, 300.0, 74.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            pinBottom: true,
+            fixedWidth: true,
+            fixedHeight: true,
             child:
                 // Adobe XD layer: 'Dark 🌑 / Text fiel…' (component)
-                textfield(),
+            TextFormField(
+              validator: (value){
+                if(value != 'martijn'){
+                  return 'Vul a.u.b iets in';
+
+
+
+
+
+
+                  //
+                } else {
+                  password = value;
+                  return null;
+                }
+              },
+              cursorColor: Theme.of(context).cursorColor,
+              style: TextStyle(
+                color: Color(0xFFFFFFFF),
+              ),
+              initialValue: '',
+              maxLength: 20,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(
+                  color: Color(0xffffffff),
+                ),
+                labelText: "Username",
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xff111111)),
+                ),
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 }
+
+class LoginForm extends StatefulWidget{
+  @override
+  LoginFormState createState(){
+    return LoginFormState();
+  }
+}
+
+
 
 const String _svg_25w5dc =
     '<svg viewBox="0.0 625.0 375.0 42.0" ><path transform="translate(0.0, 625.0)" d="M 0 0 L 375 0 L 375 42 L 0 42 Z" fill="#2b2b2b" fill-opacity="0.3" stroke="none" stroke-width="1" stroke-opacity="0.3" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

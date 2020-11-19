@@ -5,6 +5,10 @@ import 'package:adobe_xd/page_link.dart';
 import './signupscreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'loginscreen.dart';
+import 'loginscreen.dart';
+import 'signupscreen.dart';
+
 class homescreen extends StatelessWidget {
   final ImageProvider youreawake;
   final VoidCallback login;
@@ -59,9 +63,7 @@ class homescreen extends StatelessWidget {
                     transition: LinkTransition.Fade,
                     ease: Curves.easeOut,
                     duration: 0.3,
-                    pageBuilder: () => loginscreen(
-                      youreawakeblur:
-                          const AssetImage('assets/images/heythereblur.jpg'),
+                    pageBuilder: () => Loginscreen(
                     ),
                   ),
                 ],
@@ -71,9 +73,8 @@ class homescreen extends StatelessWidget {
                       bounds: Rect.fromLTWH(0.0, 0.0, 247.0, 50.0),
                       size: Size(247.0, 50.0),
                       pinLeft: true,
-                      pinRight: true,
-                      pinTop: true,
-                      pinBottom: true,
+                      fixedWidth: true,
+                      fixedHeight: true,
                       child:
                           // Adobe XD layer: 'rectangle-13' (shape)
                           SvgPicture.string(
@@ -120,9 +121,7 @@ class homescreen extends StatelessWidget {
                     transition: LinkTransition.Fade,
                     ease: Curves.easeOut,
                     duration: 0.3,
-                    pageBuilder: () => signupscreen(
-                      youreawakeblur:
-                          const AssetImage('assets/images/heythereblur.jpg'),
+                    pageBuilder: () => Signupscreen(
                     ),
                   ),
                 ],
@@ -130,11 +129,10 @@ class homescreen extends StatelessWidget {
                   children: <Widget>[
                     Pinned.fromSize(
                       bounds: Rect.fromLTWH(0.0, 0.0, 247.0, 50.0),
-                      size: Size(247.0, 50.0),
+                      size: Size(250.0, 50.0),
                       pinLeft: true,
-                      pinRight: true,
-                      pinTop: true,
-                      pinBottom: true,
+                      fixedWidth: true,
+                      fixedHeight: true,
                       child:
                           // Adobe XD layer: 'rectangle-13' (shape)
                           SvgPicture.string(
@@ -144,8 +142,9 @@ class homescreen extends StatelessWidget {
                       ),
                     ),
                     Pinned.fromSize(
-                      bounds: Rect.fromLTWH(56.0, 17.0, 136.0, 16.0),
-                      size: Size(247.0, 50.0),
+                      bounds: Rect.fromLTWH(50.0, 17.0, 139.0, 16.0),
+                      size: Size(250.0, 50.0),
+                      pinLeft: true,
                       fixedWidth: true,
                       fixedHeight: true,
                       child:
@@ -158,7 +157,7 @@ class homescreen extends StatelessWidget {
                           color: const Color(0xffffffff),
                           fontWeight: FontWeight.w700,
                         ),
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],
@@ -170,8 +169,7 @@ class homescreen extends StatelessWidget {
             bounds: Rect.fromLTWH(65.5, 42.0, 240.0, 178.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
-            pinRight: true,
-            pinTop: true,
+            fixedWidth: true,
             fixedHeight: true,
             child: Text(
               sport,
