@@ -361,9 +361,9 @@ class SignupFormState extends State<SignupForm> {
                   ease: Curves.easeOut,
                   duration: 0.3,
                   pageBuilder: () => homescreen(
-                    youreawake: const AssetImage('assets/images/heythere.jpg'),
-                    sport: 'Sporten in de \nbuurt',
-                    wit: const Color(0xffffffff),
+                    // youreawake: const AssetImage('assets/images/heythere.jpg'),
+                    // sport: 'Sporten in de \nbuurt',
+                    // wit: const Color(0xffffffff),
                   ),
                 ),
               ],

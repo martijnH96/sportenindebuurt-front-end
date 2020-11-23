@@ -1,25 +1,57 @@
+import 'package:Sporten_in_de_buurt/http/HttpService.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:adobe_xd/page_link.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:convert';
+// import 'package:http/http.dart' as http;
 
 import 'loginscreen.dart';
 import 'signupscreen.dart';
 
-class homescreen extends StatelessWidget {
-  final ImageProvider youreawake;
+final ImageProvider youreawake = const AssetImage('assets/images/heythere.jpg');
+final String sport = 'Sporten in de \nbuurt';
+final Color wit = const Color(0xffffffff);
+final HOME_URL = "/";
+
+class homescreen extends StatefulWidget {
   final VoidCallback login;
   final VoidCallback maakaccountaan;
-  final String sport;
-  final Color wit;
   homescreen({
     Key key,
-    this.youreawake = const AssetImage('assets/images/heythere.jpg'),
     this.login,
     this.maakaccountaan,
-    this.sport = 'Sporten in de \nbuurt',
-    this.wit = const Color(0xffffffff),
   }) : super(key: key);
+
+  @override
+  _homescreenState createState() => _homescreenState();
+}
+
+class _homescreenState extends State<homescreen> {
+
+  final HttpService httpService = HttpService();
+
+  String _ipAddress = 'Unknown';
+
+  _getIPAddress() async {
+    String url = httpService.hostname + "/loginscreen";
+    // var httpClient = createHttpClient();
+    var response = await httpService.get(url);
+    Map data = json.decode(response.body);
+    String ip = data['origin'];
+
+    // If the widget was removed from the tree while the message was in flight,
+    // we want to discard the reply rather than calling setState to update our
+    // non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _ipAddress = ip;
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,13 +62,11 @@ class homescreen extends StatelessWidget {
             bounds: Rect.fromLTWH(-45.0, -17.0, 450.0, 675.0),
             size: Size(360.0, 640.0),
             child:
-                // Adobe XD layer: 'pexels-photo-126319' (shape)
+            // Adobe XD layer: 'pexels-photo-126319' (shape)
             Container(
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: youreawake,
-                  fit: BoxFit.fitHeight
-                ),
+                image:
+                DecorationImage(image: youreawake, fit: BoxFit.fitHeight),
               ),
             ),
           ),
@@ -47,17 +77,16 @@ class homescreen extends StatelessWidget {
             fixedWidth: true,
             fixedHeight: true,
             child:
-                // Adobe XD layer: 'Login' (group)
-                GestureDetector(
-              onTap: () => login?.call(),
+            // Adobe XD layer: 'Login' (group)
+            GestureDetector(
+              onTap: () => widget.login?.call(),
               child: PageLink(
                 links: [
                   PageLinkInfo(
                     transition: LinkTransition.Fade,
                     ease: Curves.easeOut,
                     duration: 0.3,
-                    pageBuilder: () => Loginscreen(
-                    ),
+                    pageBuilder: () => Loginscreen(),
                   ),
                 ],
                 child: Stack(
@@ -69,8 +98,8 @@ class homescreen extends StatelessWidget {
                       fixedWidth: true,
                       fixedHeight: true,
                       child:
-                          // Adobe XD layer: 'rectangle-13' (shape)
-                          SvgPicture.string(
+                      // Adobe XD layer: 'rectangle-13' (shape)
+                      SvgPicture.string(
                         _svg_pk18kn,
                         allowDrawingOutsideViewBox: true,
                         fit: BoxFit.fill,
@@ -82,9 +111,9 @@ class homescreen extends StatelessWidget {
                       fixedWidth: true,
                       fixedHeight: true,
                       child:
-                          // Adobe XD layer: 'Text' (text)
-                          Text(
-                        'LOGIN',
+                      // Adobe XD layer: 'Text' (text)
+                      Text(
+                        "LOGIN",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 13,
@@ -105,17 +134,16 @@ class homescreen extends StatelessWidget {
             fixedWidth: true,
             fixedHeight: true,
             child:
-                // Adobe XD layer: 'Signup' (group)
-                GestureDetector(
-              onTap: () => maakaccountaan?.call(),
+            // Adobe XD layer: 'Signup' (group)
+            GestureDetector(
+              // onTap: () => widget.maakaccountaan?.call(),
               child: PageLink(
                 links: [
                   PageLinkInfo(
                     transition: LinkTransition.Fade,
                     ease: Curves.easeOut,
                     duration: 0.3,
-                    pageBuilder: () => Signupscreen(
-                    ),
+                    pageBuilder: () => Signupscreen(),
                   ),
                 ],
                 child: Stack(
@@ -127,8 +155,8 @@ class homescreen extends StatelessWidget {
                       fixedWidth: true,
                       fixedHeight: true,
                       child:
-                          // Adobe XD layer: 'rectangle-13' (shape)
-                          SvgPicture.string(
+                      // Adobe XD layer: 'rectangle-13' (shape)
+                      SvgPicture.string(
                         _svg_tedd5l,
                         allowDrawingOutsideViewBox: true,
                         fit: BoxFit.fill,
@@ -141,8 +169,8 @@ class homescreen extends StatelessWidget {
                       fixedWidth: true,
                       fixedHeight: true,
                       child:
-                          // Adobe XD layer: 'Text' (text)
-                          Text(
+                      // Adobe XD layer: 'Text' (text)
+                      Text(
                         'MAAK ACCOUNT AAN',
                         style: TextStyle(
                           fontFamily: 'Lato',
@@ -186,6 +214,7 @@ class homescreen extends StatelessWidget {
     );
   }
 }
+
 
 const String _svg_pk18kn =
     '<svg viewBox="64.0 591.0 247.0 50.0" ><path transform="translate(64.0, 591.0)" d="M 10 0 L 237 0 C 242.5228424072266 0 247 4.477152347564697 247 10 L 247 40 C 247 45.52284622192383 242.5228424072266 50 237 50 L 10 50 C 4.477152347564697 50 0 45.52284622192383 0 40 L 0 10 C 0 4.477152347564697 4.477152347564697 0 10 0 Z" fill="#2a4755" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
