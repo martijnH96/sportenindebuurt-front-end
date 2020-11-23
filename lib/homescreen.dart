@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
-import './loginscreen.dart';
 import 'package:adobe_xd/page_link.dart';
-import './signupscreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'loginscreen.dart';
 import 'loginscreen.dart';
 import 'signupscreen.dart';
 
@@ -32,25 +29,21 @@ class homescreen extends StatelessWidget {
           Pinned.fromSize(
             bounds: Rect.fromLTWH(-45.0, -17.0, 450.0, 675.0),
             size: Size(360.0, 640.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            pinBottom: true,
             child:
                 // Adobe XD layer: 'pexels-photo-126319' (shape)
-                Container(
+            Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: youreawake,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fitHeight
                 ),
               ),
             ),
           ),
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(57.0, 526.0, 247.0, 50.0),
+            bounds: Rect.fromLTWH(75.0, 526.0, 247.0, 50.0),
             size: Size(360.0, 640.0),
-            pinBottom: true,
+            pinLeft: true,
             fixedWidth: true,
             fixedHeight: true,
             child:

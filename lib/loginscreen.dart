@@ -3,7 +3,6 @@ import 'package:adobe_xd/pinned.dart';
 import './signupscreen.dart';
 import 'package:adobe_xd/page_link.dart';
 import './homescreen.dart';
-import './textfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'signupscreen.dart';
@@ -18,6 +17,8 @@ class Loginscreen extends StatelessWidget{
 }
 
 class LoginFormState extends State<LoginForm> {
+  final correctUsername = 'martijn';
+  final correctPassword = 'martijn';
   final _formKey = GlobalKey<FormState>();
   final loginController = TextEditingController();
   final ImageProvider youreawakeblur;
@@ -94,9 +95,8 @@ class LoginFormState extends State<LoginForm> {
                       bounds: Rect.fromLTWH(0.0, 0.0, 375.0, 42.0),
                       size: Size(375.0, 42.0),
                       pinLeft: true,
-                      pinRight: true,
-                      pinTop: true,
-                      pinBottom: true,
+                      fixedWidth: true,
+                      fixedHeight: true,
                       child:
                           // Adobe XD layer: 'rectangle-17' (shape)
                       SvgPicture.string(
@@ -155,10 +155,14 @@ class LoginFormState extends State<LoginForm> {
                 // Adobe XD layer: 'Login' (group)
             FloatingActionButton(
               onPressed: () {
-                if(_formKey.currentState.validate()){
-                  Scaffold
-                  .of(context)
-                  .showSnackBar(SnackBar(content: Text(username + " " + password),),);
+                if(_formKey.currentState.validate()) {
+                  if (username == correctUsername &&
+                      password == correctPassword) {
+                    Scaffold
+                        .of(context)
+                        .showSnackBar(
+                      SnackBar(content: Text("Succesvol ingelogd."),),);
+                  }
                 }
               },
               child: Stack(
@@ -178,7 +182,7 @@ class LoginFormState extends State<LoginForm> {
                     ),
                   ),
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(30.0, 17.0, 40.0, 16.0),
+                    bounds: Rect.fromLTWH(30.0, 17.0, 50.0, 16.0),
                     size: Size(100.0, 50.0),
                     fixedWidth: true,
                     fixedHeight: true,
@@ -192,7 +196,7 @@ class LoginFormState extends State<LoginForm> {
                         color: const Color(0xffffffff),
                         fontWeight: FontWeight.w700,
                       ),
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
                     ),
                   ),
                 ],
@@ -221,7 +225,7 @@ class LoginFormState extends State<LoginForm> {
 
                     //
                   } else {
-                    username = value;
+                    password = value;
                     return null;
                   }
                 },
@@ -236,22 +240,20 @@ class LoginFormState extends State<LoginForm> {
                     color: Color(0xffffffff),
                   ),
                   labelText: "Password",
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xff111111)),
-                  ),
+                  border: OutlineInputBorder(),
                 ),
               ),
             ),
           // Adobe XD layer: 'Pwd field' (text)
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(46.0, 139.0, 92.0, 48.0),
+            bounds: Rect.fromLTWH(46.0, 139.0, 110.0, 48.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             fixedWidth: true,
             fixedHeight: true,
             child:
                 // Adobe XD layer: 'Login title' (text)
-                Text(
+            Text(
               'Login',
               style: TextStyle(
                 fontFamily: 'Lato',
@@ -266,7 +268,6 @@ class LoginFormState extends State<LoginForm> {
             bounds: Rect.fromLTWH(23.1, 53.1, 18.4, 17.9),
             size: Size(360.0, 640.0),
             pinLeft: true,
-            pinTop: true,
             fixedWidth: true,
             fixedHeight: true,
             child:
@@ -291,47 +292,7 @@ class LoginFormState extends State<LoginForm> {
               ),
             ),
           ),
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(45.0, 228.0, 300.0, 74.0),
-            size: Size(360.0, 640.0),
-            pinLeft: true,
-            fixedWidth: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Dark 🌑 / Text fiel…' (component)
-            TextFormField(
-              validator: (value){
-                if(value != 'martijn'){
-                  return 'Vul a.u.b iets in';
-
-
-
-
-
-
-                  //
-                } else {
-                  password = value;
-                  return null;
-                }
-              },
-              cursorColor: Theme.of(context).cursorColor,
-              style: TextStyle(
-                color: Color(0xFFFFFFFF),
-              ),
-              initialValue: '',
-              maxLength: 20,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(
-                  color: Color(0xffffffff),
-                ),
-                labelText: "Username",
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff111111)),
-                ),
-              ),
-            ),
-          ),
+          buildRow(),
         ],
       ),
     );
@@ -343,6 +304,39 @@ class LoginForm extends StatefulWidget{
   LoginFormState createState(){
     return LoginFormState();
   }
+}
+Widget buildRow(){
+  return Pinned.fromSize(
+    bounds: Rect.fromLTWH(45.0, 228.0, 300.0, 74.0),
+    size: Size(360.0, 640.0),
+    child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+        TextFormField(
+          validator: (value){
+            if(value != 'martijn'){
+              // return 'Vul a.u.b iets in';
+              //
+            } else {
+              // return null;
+            }
+          },
+        style: TextStyle(
+          color: Color(0xFFFFFFFF),
+        ),
+        initialValue: '',
+        maxLength: 20,
+        decoration: InputDecoration(
+          labelStyle: TextStyle(
+            color: Color(0xffffffff),
+          ),
+          labelText: "Username",
+          border: OutlineInputBorder(),
+        ),
+      ),
+    ],
+  ),
+        );
 }
 
 

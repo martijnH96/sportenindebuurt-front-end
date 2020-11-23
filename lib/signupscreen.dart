@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import './loginscreen.dart';
 import 'package:adobe_xd/page_link.dart';
-import './sportactiviteiten.dart';
 import './homescreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -109,7 +108,7 @@ class SignupFormState extends State<SignupForm> {
                 if(_formKey.currentState.validate()){
                   Scaffold
                       .of(context)
-                      .showSnackBar(SnackBar(content: Text(username + " " + password),),);
+                      .showSnackBar(SnackBar(content: Text(username + " " + leeftijd + " " + email + " " + password),),);
                 }
               },
               child: Stack(
@@ -170,7 +169,7 @@ class SignupFormState extends State<SignupForm> {
 
 
 
-                  //
+                  //    password
                 } else {
                   password = value;
                   return null;
@@ -214,7 +213,7 @@ class SignupFormState extends State<SignupForm> {
 
 
 
-                  //
+                  //    email
                 } else {
                   email = value;
                   return null;
@@ -247,7 +246,7 @@ class SignupFormState extends State<SignupForm> {
             child:
             TextFormField(
               validator: (value){
-                if(value.isEmpty){
+                if(value.isEmpty || double.parse(value, (e) => null) != null){
                   return 'Vul a.u.b iets in';
 
 
@@ -258,7 +257,7 @@ class SignupFormState extends State<SignupForm> {
 
 
 
-                  //
+                  //          leeftijd
                 } else {
                   leeftijd = value;
                   return null;
@@ -302,7 +301,7 @@ class SignupFormState extends State<SignupForm> {
 
 
 
-                  //
+                  //      username
                 } else {
                   username = value;
                   return null;
@@ -327,7 +326,7 @@ class SignupFormState extends State<SignupForm> {
             ),
           ),
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(40.0, 92.0, 245.0, 36.0),
+            bounds: Rect.fromLTWH(40.0, 92.0, 305.0, 36.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             pinTop: true,
