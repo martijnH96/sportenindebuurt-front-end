@@ -16,7 +16,7 @@ class HttpService{
     if (kIsWeb) {
       return 'http://localhost:8888';
     } else if (Platform.isAndroid) {
-      return 'http://10.0.2.2:8000/';
+      return 'http://10.0.2.2:8080/';
     } else {
       return 'http://localhost:8888';
     }
@@ -25,7 +25,7 @@ class HttpService{
   Future<http.Response> get(String url){
     return http.get(hostname + url);
   }
-  Future<http.Response> post(String url, Map<String, String> body){
+  Future<http.Response> post(String url, Map<String, String> body) async{
     return http.post(hostname + url, headers: getHeaders(), body: jsonEncode(body));
   }
   Future<http.Response> put(String url, Map body){
@@ -41,8 +41,4 @@ class HttpService{
     HttpHeaders.authorizationHeader: "Bearer $token"
   })
       .or({HttpHeaders.contentTypeHeader: "application/json"});
-  // Map getHeaders = {"Content-type": "application/json", "Accept": "application/json"};
-
-  // Map getHeaders() =>
-  //     ({HttpHeaders.contentTypeHeader: "application/json"});
 }
