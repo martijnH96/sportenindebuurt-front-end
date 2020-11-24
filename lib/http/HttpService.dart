@@ -1,16 +1,13 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:Sporten_in_de_buurt/helpers/Maybe.dart';
 import "package:http/http.dart" as http;
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-
-import '../AuthenticationService.dart';
+import 'package:rxdart/rxdart.dart';
 
 class HttpService{
-
-  Maybe<String> get _token => AuthenticationService.tokenStream.value;
+  static final tokenStream = BehaviorSubject<Maybe<String>>.seeded(Maybe.nothing());
+  Maybe<String> get _token => tokenStream.value;
 
   String get hostname {
     if (kIsWeb) {
@@ -34,11 +31,13 @@ class HttpService{
   Future<http.Response> patch(String url, Map body){
     return http.patch(hostname + url, headers: getHeaders(), body: jsonEncode(body));
   }
+
+
+
   Map getHeaders() => _token
       .map((token) => {
     HttpHeaders.contentTypeHeader: "application/json",
     HttpHeaders.acceptHeader: "application/json",
-    HttpHeaders.authorizationHeader: "Bearer $token"
   })
       .or({HttpHeaders.contentTypeHeader: "application/json"});
 }

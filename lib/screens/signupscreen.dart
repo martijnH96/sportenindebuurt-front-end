@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
-import './loginscreen.dart';
+import 'loginscreen.dart';
 import 'package:adobe_xd/page_link.dart';
-import './homescreen.dart';
+import 'homescreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Signupscreen extends StatelessWidget{
@@ -79,10 +79,7 @@ class SignupFormState extends State<SignupForm> {
                   transition: LinkTransition.Fade,
                   ease: Curves.easeOut,
                   duration: 0.3,
-                  pageBuilder: () => LoginFormState(
-                    youreawakeblur:
-                        const AssetImage('assets/images/heythereblur.jpg'),
-                  ),
+                  pageBuilder: () => LoginForm(),
                 ),
               ],
               child: Text(

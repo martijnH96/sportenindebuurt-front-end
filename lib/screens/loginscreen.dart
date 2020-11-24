@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:Sporten_in_de_buurt/http/HttpService.dart';
+import 'package:Sporten_in_de_buurt/screens/sportactiviteiten.dart';
 import 'package:adobe_xd/page_link.dart';
 import 'package:adobe_xd/pinned.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import "package:http/http.dart" as http;
-import './homescreen.dart';
-import './signupscreen.dart';
+import 'homescreen.dart';
 import 'signupscreen.dart';
 
 class LoginForm extends StatefulWidget {
@@ -40,16 +40,12 @@ class LoginFormState extends State<LoginForm> {
   String password;
 
   Widget buildLoginForm() {
-    Future<Album> futureAlbum;
-    Future<http.Response> response;
-    // futureAlbum = fetchAlbum();
-
     return Form(
       key: _formKey,
       child: Stack(
         children: <Widget>[
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(45.0, 285.0, 300.0, 74.0),
+            bounds: Rect.fromLTWH(35.0, 285.0, 350.0, 74.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             fixedWidth: true,
@@ -80,7 +76,7 @@ class LoginFormState extends State<LoginForm> {
             ),
           ),
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(45.0, 385.0, 300.0, 74.0),
+            bounds: Rect.fromLTWH(35.0, 385.0, 350.0, 74.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             fixedWidth: true,
@@ -112,16 +108,21 @@ class LoginFormState extends State<LoginForm> {
             ),
           ),
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(45.0, 485.0, 300.0, 50.0),
+            bounds: Rect.fromLTWH(50.0, 485.0, 300.0, 50.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             fixedWidth: true,
             fixedHeight: true,
             child:
-
             // Adobe XD layer: 'Login' (group)
             ElevatedButton(
               onPressed: () async {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Bezig met inloggen"),
+                    duration: Duration(seconds: 1),
+                  ),
+                );
                 if (_formKey.currentState.validate()) {
                   if (user == correctUsername &&
                       password == correctPassword) {
@@ -130,13 +131,11 @@ class LoginFormState extends State<LoginForm> {
                     if(response.statusCode == 200){
                       Scaffold.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(jsonEncode(futureAlbum.toString())),
+                          content: Text("Ingelogd op: "+jsonDecode(response.body)["user"]),
                         ),
                       );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => sportactiviteiten()));
                     }
-                    // if(futureAlbum != null){
-                    //
-                    // }
                   }
                 }
               },
@@ -144,7 +143,6 @@ class LoginFormState extends State<LoginForm> {
                   Text("LOGIN"),
               )
           ),
-
         ],
       ),
     );
@@ -336,34 +334,3 @@ const String _svg_ivg8a8 =
 
 const String _svg_t77q38 =
     '<svg viewBox="48.5 384.5 280.0 1.0" ><path transform="translate(48.5, 384.5)" d="M 0 0 L 280 0" fill="none" fill-opacity="0.28" stroke="#ffffff" stroke-width="1" stroke-opacity="0.28" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
-
-
-class Album {
-  final int userId;
-  final int id;
-  final String title;
-
-  Album({this.userId, this.id, this.title});
-
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
-    );
-  }
-}
-
-Future<Album> fetchAlbum() async {
-  final response = await http.get('https://jsonplaceholder.typicode.com/albums/1');
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return Album.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
