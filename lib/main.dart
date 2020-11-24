@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'EventForm.dart';
 import 'homescreen.dart';
 
 void main() {
@@ -9,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: homescreen(),
+      home:EventForm(),
     );
   }
 }
