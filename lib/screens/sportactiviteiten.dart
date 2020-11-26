@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class sportactiviteiten extends StatefulWidget {
-  // sportactiviteiten({Key key}) : super(key: key);
   @override
   sportactiviteitenState createState() => sportactiviteitenState();
 }
@@ -10,13 +12,50 @@ class sportactiviteiten extends StatefulWidget {
 class sportactiviteitenState extends State<sportactiviteiten> {
   String dropdownValue = 'One';
   final ImageProvider youreawakeblur =
-      const AssetImage('assets/images/heythereblur.jpg');
+  const AssetImage('assets/images/heythereblur.jpg');
   final _formKey = GlobalKey<FormState>();
+  Completer<GoogleMapController> _controller = Completer();
+  static final CameraPosition _kHome = CameraPosition(
+    target: LatLng(51.98475177056764, 5.913200119947337),
+    zoom: 14.4746,
+    tilt: 59.440717697143555,
+  );
+  static final CameraPosition _kSchool = CameraPosition(
+    target: LatLng(51.989148239414384, 5.949366111923605),
+    zoom: 14.4746,
+    tilt: 59.440717697143555,
+    // bearing: 192.8334901395799,
+  );
+
+  Future<void> _toSchool() async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(_kSchool));
+  }
+
+
   Widget SportenForm(){
-    return Scaffold(
+    return new Scaffold(
         key: _formKey,
         body: Stack(
           children: <Widget>[
+            Pinned.fromSize(
+              bounds: Rect.fromLTWH(-45.0, -17.0, 450.0, 675.0),
+              size: Size(360.0, 640.0),
+              pinLeft: true,
+              pinRight: true,
+              pinTop: true,
+              pinBottom: true,
+              child:
+              // Adobe XD layer: 'pexels-photo-126319' (shape)
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: youreawakeblur,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
             Pinned.fromSize(
               bounds: Rect.fromLTWH(45.0, 585.0, 300.0, 50.0),
               size: Size(360.0, 640.0),
@@ -25,12 +64,7 @@ class sportactiviteitenState extends State<sportactiviteiten> {
               fixedHeight: true,
               child:
               RaisedButton(
-                onPressed: (){
-                  AlertDialog(
-                    title: Text("My title"),
-                    content: Text(dropdownValue),
-                  );
-                },
+                onPressed: _toSchool,
                 child: Text(
                   'VOEG SPORTEN TOE\n',
                   style: TextStyle(
@@ -75,6 +109,31 @@ class sportactiviteitenState extends State<sportactiviteiten> {
                 }).toList(),
               ),
             ),
+            Pinned.fromSize(
+                bounds: Rect.fromLTWH(39.5, 260.0, 280.0, 300.5),
+                size: Size(360.0, 640.0),
+                child:
+                GoogleMap(
+                  mapType: MapType.hybrid,
+                  initialCameraPosition: _kHome,
+                  tiltGesturesEnabled: true,
+                  onMapCreated: (GoogleMapController controller){
+                    _controller.complete(controller);
+                  },
+                )
+            ),
+            // Pinned.fromSize(
+            //     bounds: Rect.fromLTWH(39.5, 160.0, 280.0, 59.5),
+            //     size: Size(360.0, 640.0),
+            //     child:
+            //     GoogleMap(
+            //       mapType: MapType.hybrid,
+            //       initialCameraPosition: _kHome,
+            //       onMapCreated: (GoogleMapController controller){
+            //         _controller.complete(controller);
+            //       },
+            //     )
+            // ),
           ],
         )
     );
@@ -84,44 +143,27 @@ class sportactiviteitenState extends State<sportactiviteiten> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(-45.0, -17.0, 450.0, 675.0),
-            size: Size(360.0, 640.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            pinBottom: true,
-            child:
-                // Adobe XD layer: 'pexels-photo-126319' (shape)
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: youreawakeblur,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(40.0, 75.0, 243.0, 72.0),
-            size: Size(360.0, 640.0),
-            pinLeft: true,
-            fixedWidth: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Signup title' (text)
-                Text(
-              'Sporten selecteren\n',
-              style: TextStyle(
-                fontFamily: 'Lato',
-                fontSize: 30,
-                color: const Color(0xffffffff),
-                fontWeight: FontWeight.w300,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
+          //
+          //
+          // Pinned.fromSize(
+          //   bounds: Rect.fromLTWH(40.0, 75.0, 243.0, 72.0),
+          //   size: Size(360.0, 640.0),
+          //   pinLeft: true,
+          //   fixedWidth: true,
+          //   fixedHeight: true,
+          //   child:
+          //       // Adobe XD layer: 'Signup title' (text)
+          //       Text(
+          //     'Sporten selecteren\n',
+          //     style: TextStyle(
+          //       fontFamily: 'Lato',
+          //       fontSize: 30,
+          //       color: const Color(0xffffffff),
+          //       fontWeight: FontWeight.w300,
+          //     ),
+          //     textAlign: TextAlign.left,
+          //   ),
+          // ),
           SportenForm(),
         ],
       ),
