@@ -47,7 +47,7 @@ class MyCustomFormState extends State<MyCustomForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          textFormFields,
+          getTextFormFields(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
@@ -71,125 +71,128 @@ class MyCustomFormState extends State<MyCustomForm> {
 
   TextFormField buildTextFormField() {
     return TextFormField(
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'Vul iets in A.U.B.';
-            }
-            return null;
-          },
-        );
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Vul iets in A.U.B.';
+        }
+        return null;
+      },
+    );
   }
-}
 
-Widget submitButton = Container(
-child: Text('Submit')
-);
 
-Widget textFormFields = Container(
-  // welke textvelden hebben we nodig van de gebruiker?
-  // welke sport, aantal mensen, locatie?, tijd: begin en eind?, speelniveau.
+  Widget submitButton = Container(
+      child: Text('Submit')
+  );
 
-    child: Column (mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  Widget getTextFormFields() {
+    return Container(
+      // welke textvelden hebben we nodig van de gebruiker?
+      // welke sport, aantal mensen, locatie?, tijd: begin en eind?, speelniveau.
+
+        child: Column (mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget> [
+            _buildFormTextFields("Sport"),
+            _buildFormTextFields("Aantal deelnemers"),
+            _buildFormTextFields("Locatie"),
+            _buildFormTextFields("Begintijd"),
+            _buildFormTextFields("Eindtijd"),
+            _buildFormTextFields("Speelniveau"),
+          ],
+        )
+    );
+  }
+
+  Column _buildFormTextFields(String label) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildFormTextFields("Sport"),
-        _buildFormTextFields("Aantal deelnemers"),
-        _buildFormTextFields("Locatie"),
-        _buildFormTextFields("Begintijd"),
-        _buildFormTextFields("Eindtijd"),
-        _buildFormTextFields("Speelniveau"),
+        Container(
+          margin: const EdgeInsets.only(top: 8),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
       ],
-    )
-);
+    );
+  }
 
-
-Column _buildFormTextFields( String label) {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Container(
-        margin: const EdgeInsets.only(top: 8),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
+  Widget buildDropDown(BuildContext context) {
+    var _myActivity;
+    String _myActivityResult;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Dropdown Formfield Example'),
+      ),
+      body: Center(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(16),
+                child: DropDownFormField(
+                  titleText: 'Mijn sport',
+                  hintText: 'Please choose one',
+                  value: _myActivity,
+                  onSaved: (value) {
+                    setState(() {
+                      _myActivity = value;
+                    });
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      _myActivity = value;
+                    });
+                  },
+                  dataSource: [
+                    {
+                      "display": "Running",
+                      "value": "Running",
+                    },
+                    {
+                      "display": "Climbing",
+                      "value": "Climbing",
+                    },
+                    {
+                      "display": "Walking",
+                      "value": "Walking",
+                    },
+                    {
+                      "display": "Swimming",
+                      "value": "Swimming",
+                    },
+                    {
+                      "display": "Soccer Practice",
+                      "value": "Soccer Practice",
+                    },
+                    {
+                      "display": "Baseball Practice",
+                      "value": "Baseball Practice",
+                    },
+                    {
+                      "display": "Football Practice",
+                      "value": "Football Practice",
+                    },
+                  ],
+                  textField: 'display',
+                  valueField: 'value',
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(16),
+                child: Text(_myActivityResult),
+              )
+            ],
           ),
         ),
       ),
-    ],
-  );
-}
-
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Dropdown Formfield Example'),
-    ),
-    body: Center(
-      child: Form(
-        key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(16),
-              child: DropDownFormField(
-                titleText: 'My workout',
-                hintText: 'Please choose one',
-                value: _myActivity,
-                onSaved: (value) {
-                  setState(() {
-                    _myActivity = value;
-                  });
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _myActivity = value;
-                  });
-                },
-                dataSource: [
-                  {
-                    "display": "Running",
-                    "value": "Running",
-                  },
-                  {
-                    "display": "Climbing",
-                    "value": "Climbing",
-                  },
-                  {
-                    "display": "Walking",
-                    "value": "Walking",
-                  },
-                  {
-                    "display": "Swimming",
-                    "value": "Swimming",
-                  },
-                  {
-                    "display": "Soccer Practice",
-                    "value": "Soccer Practice",
-                  },
-                  {
-                    "display": "Baseball Practice",
-                    "value": "Baseball Practice",
-                  },
-                  {
-                    "display": "Football Practice",
-                    "value": "Football Practice",
-                  },
-                ],
-                textField: 'display',
-                valueField: 'value',
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Text(_myActivityResult),
-            )
-          ],
-        ),
-      ),
-    ),
-  );
-}
+    );
+  }
 }
