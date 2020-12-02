@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
-import 'package:adobe_xd/pinned.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:multiselect_formfield/multiselect_formfield.dart';
 
 class sportactiviteiten extends StatefulWidget {
   @override
@@ -32,191 +31,181 @@ class sportactiviteitenState extends State<sportactiviteiten> {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kSchool));
   }
+  List _myActivities;
+  String _myActivitiesResult;
 
+  var pickedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _myActivities = [];
+    _myActivitiesResult = '';
+    pickedDate = DateTime.now();
+  }
+
+  _saveForm() {
+    var form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      setState(() {
+        _myActivitiesResult = _myActivities.toString();
+      });
+
+    }
+  }
 
   Widget SportenForm(){
-    return new Scaffold(
+    return Form(
         key: _formKey,
-        body: Stack(
+        child: Column(
           children: <Widget>[
-            Pinned.fromSize(
-              bounds: Rect.fromLTWH(-45.0, -17.0, 450.0, 675.0),
-              size: Size(360.0, 640.0),
-              pinLeft: true,
-              pinRight: true,
-              pinTop: true,
-              pinBottom: true,
-              child:
-              // Adobe XD layer: 'pexels-photo-126319' (shape)
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: youreawakeblur,
-                    fit: BoxFit.cover,
-                  ),
+            Container(
+              padding: EdgeInsets.all(16),
+              child: MultiSelectFormField(
+                autovalidate: false,
+                chipBackGroundColor: Colors.red,
+                chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                checkBoxActiveColor: Colors.red,
+                checkBoxCheckColor: Colors.green,
+                dialogShapeBorder: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                title: Text(
+                  "My workouts",
+                  style: TextStyle(fontSize: 16),
                 ),
-              ),
-            ),
-            Pinned.fromSize(
-              bounds: Rect.fromLTWH(45.0, 585.0, 300.0, 50.0),
-              size: Size(360.0, 640.0),
-              pinLeft: true,
-              fixedWidth: true,
-              fixedHeight: true,
-              child:
-              RaisedButton(
-                onPressed: _toSchool,
-                child: Text(
-                  'VOEG SPORTEN TOE\n',
-                  style: TextStyle(
-                    fontFamily: 'Lato',
-                    fontSize: 13,
-                    color: const Color(0xffffffff),
-                    fontWeight: FontWeight.w700,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            Pinned.fromSize(
-              bounds: Rect.fromLTWH(39.5, 160.0, 280.0, 59.5),
-              size: Size(360.0, 640.0),
-              pinLeft: true,
-              fixedWidth: true,
-              fixedHeight: true,
-              child:
-              // Adobe XD layer: 'sport' (group)
-              DropdownButton<String>(
-                value: dropdownValue,
-                icon: Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style: TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
-                ),
-                onChanged: (String newValue) {
+                validator: (value) {
+                  if (value == null || value.length == 0) {
+                    return 'Please select one or more options';
+                  }
+                  return null;
+                },
+                dataSource: [
+                  {
+                    "display": "Running",
+                    "value": "Running",
+                  },
+                  {
+                    "display": "Climbing",
+                    "value": "Climbing",
+                  },
+                  {
+                    "display": "Walking",
+                    "value": "Walking",
+                  },
+                  {
+                    "display": "Swimming",
+                    "value": "Swimming",
+                  },
+                  {
+                    "display": "Soccer Practice",
+                    "value": "Soccer Practice",
+                  },
+                  {
+                    "display": "Baseball Practice",
+                    "value": "Baseball Practice",
+                  },
+                  {
+                    "display": "Football Practice",
+                    "value": "Football Practice",
+                  },
+                ],
+                textField: 'display',
+                valueField: 'value',
+                okButtonLabel: 'OK',
+                cancelButtonLabel: 'CANCEL',
+                hintWidget: Text('Please choose one or more'),
+                initialValue: _myActivities,
+                onSaved: (value) {
+                  if (value == null) return;
                   setState(() {
-                    dropdownValue = newValue;
+                    _myActivities = value;
                   });
                 },
-                items: <String>['One', 'Two', 'Free', 'Four']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
               ),
             ),
-            Pinned.fromSize(
-                bounds: Rect.fromLTWH(39.5, 260.0, 280.0, 300.5),
-                size: Size(360.0, 640.0),
-                child:
-                GoogleMap(
-                  mapType: MapType.hybrid,
-                  initialCameraPosition: _kHome,
-                  tiltGesturesEnabled: true,
-                  onMapCreated: (GoogleMapController controller){
-                    _controller.complete(controller);
-                  },
-                )
+            Container(
+              padding: EdgeInsets.all(8),
+              child: RaisedButton(
+                child: Text('Save'),
+                onPressed: _saveForm,
+              ),
             ),
-            // Pinned.fromSize(
-            //     bounds: Rect.fromLTWH(39.5, 160.0, 280.0, 59.5),
-            //     size: Size(360.0, 640.0),
-            //     child:
-            //     GoogleMap(
-            //       mapType: MapType.hybrid,
-            //       initialCameraPosition: _kHome,
-            //       onMapCreated: (GoogleMapController controller){
-            //         _controller.complete(controller);
-            //       },
-            //     )
-            // ),
+            Container(
+              padding: EdgeInsets.all(16),
+              child: Text(_myActivitiesResult),
+            ),
+
           ],
         )
     );
   }
 
-  // final items = List<timeItem>.generate(
-  //   for(String item in _myActivities){
-  //
-  //   }
-  //       ? timeItem(_myActivities[0]),
-  // );
-
-  List _myActivities;
-  String _myActivitiesResult;
-
-  Widget buildDropDown() {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          //
-          //
-          // Pinned.fromSize(
-          //   bounds: Rect.fromLTWH(40.0, 75.0, 243.0, 72.0),
-          //   size: Size(360.0, 640.0),
-          //   pinLeft: true,
-          //   fixedWidth: true,
-          //   fixedHeight: true,
-          //   child:
-          //       // Adobe XD layer: 'Signup title' (text)
-          //       Text(
-          //     'Sporten selecteren\n',
-          //     style: TextStyle(
-          //       fontFamily: 'Lato',
-          //       fontSize: 30,
-          //       color: const Color(0xffffffff),
-          //       fontWeight: FontWeight.w300,
-          //     ),
-          //     textAlign: TextAlign.left,
-          //   ),
-          // ),
-          SportenForm(),
-        ],
-      ),
-    );
+  Widget buildotherForm(int i){
+    return new Text(_myActivities[i]);
   }
 
-  // Widget buildTimeFrame(BuildContext context){
-  //   return BasicDateTimeField();
-  // }
-  // Widget BasicDateTimeField(String string) {
-  //   final format = DateFormat("yyyy-MM-dd HH:mm");
-  //   return Column(children: <Widget>[
-  //     // Text(Sport),
-  //     Text('Basic date & time field (${format.pattern})'),
-  //     DateTimeFieldeld(
-  //       format: format,
-  //       onShowPicker: (context, currentValue) async {
-  //         final date = await showDatePicker(
-  //             context: context,
-  //             firstDate: DateTime(1900),
-  //             initialDate: currentValue ?? DateTime.now(),
-  //             lastDate: DateTime(2100));
-  //         if (date != null) {
-  //           final time = await showTimePicker(
-  //             context: context,
-  //             initialTime:
-  //             TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-  //           );
-  //           return DateTimeField.combine(date, time);
-  //         } else {
-  //           return currentValue;
-  //         }
-  //       },
-  //     ),
-  //   ]);
-  // }
+  Widget buildDropDown() {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SportenForm(),
+          Expanded(
+              child: new ListView.builder
+                (
+                  itemCount: _myActivities.length,
+
+                  itemBuilder: (BuildContext ctxt, int Index) {
+                    return new Container(
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: Text(_myActivities[Index]),
+                            onTap: _pickDate,
+                          ),
+                        Text(pickedDate.toString())
+                        ],
+                      ),
+
+                    );
+                  }
+              )
+          ),
+        ],
+      );
+  }
+
+  _pickDate() async {
+    DateTime date = await showDatePicker(
+        context: context,
+        initialDate: pickedDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(DateTime.now().year+1)
+    );
+    if(date != null){
+      setState(() {
+        pickedDate = date;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.all(20.0),
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: youreawakeblur,
+            fit: BoxFit.cover,
+          ),
+        ),
+
+        child: buildDropDown(),
+      )
+    );
   }
 }

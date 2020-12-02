@@ -40,7 +40,7 @@ class LoginFormState extends State<LoginForm> {
         children: <Widget>[
           TextFormField(
             validator: (value) {
-              if (!value.isEmpty) {
+              if (value.isEmpty) {
                 return 'Vul a.u.b iets in';
               } else {
                 user = value;
@@ -60,7 +60,7 @@ class LoginFormState extends State<LoginForm> {
           ),
           TextFormField(
             validator: (value) {
-              if (!value.isEmpty) {
+              if (value.isEmpty) {
                 return 'Vul a.u.b iets in';
               } else {
                 password = value;
@@ -80,7 +80,7 @@ class LoginFormState extends State<LoginForm> {
             ),
           ),
           SizedBox(
-            height: 50,
+            height: 40,
             child: GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -104,6 +104,7 @@ class LoginFormState extends State<LoginForm> {
           // ),
           SizedBox(
             width: double.infinity,
+            height: 33,
             child: RaisedButton(
               onPressed: () async {
                 Scaffold.of(context).showSnackBar(
@@ -147,7 +148,7 @@ class LoginFormState extends State<LoginForm> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        padding: EdgeInsets.all(25.0),
+        padding: EdgeInsets.all(20.0),
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
           image: DecorationImage(
