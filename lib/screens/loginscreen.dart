@@ -14,8 +14,6 @@ class LoginForm extends StatefulWidget {
 }
 
 class LoginFormState extends State<LoginForm> {
-  final correctUsername = "martijn";
-  final correctPassword = "martijn";
   final HttpService httpService = HttpService();
   final _formKey = GlobalKey<FormState>();
   final loginController = TextEditingController();
@@ -42,7 +40,7 @@ class LoginFormState extends State<LoginForm> {
         children: <Widget>[
           TextFormField(
             validator: (value) {
-              if (value != 'martijn') {
+              if (!value.isEmpty) {
                 return 'Vul a.u.b iets in';
               } else {
                 user = value;
@@ -62,7 +60,7 @@ class LoginFormState extends State<LoginForm> {
           ),
           TextFormField(
             validator: (value) {
-              if (value != 'martijn') {
+              if (!value.isEmpty) {
                 return 'Vul a.u.b iets in';
               } else {
                 password = value;
@@ -115,7 +113,7 @@ class LoginFormState extends State<LoginForm> {
                   ),
                 );
                 if (_formKey.currentState.validate()) {
-                  if (user == correctUsername && password == correctPassword) {
+                  if (!user.isEmpty && !password.isEmpty) {
                     Map<String, String> login = {
                       "user": user,
                       "password": password
