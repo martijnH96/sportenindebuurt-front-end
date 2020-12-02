@@ -28,7 +28,11 @@ dependencies:
   rxdart: ^0.24.1
   get_it: ^4.0.2
   http: ^0.12.2
-  maybe: ^0.4.0
+#  maybe: ^0.4.0
+  google_maps_flutter: ^1.0.6
+  dropdown_formfield: ^0.1.3
+  multiselect_formfield: ^0.1.5
+  datetime_picker_formfield: ^1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
