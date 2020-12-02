@@ -92,7 +92,7 @@ class MyCustomFormState extends State<MyCustomForm> {
 
         child: Column (mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget> [
-            _buildFormTextFields("Sport"),
+            buildDropDown(),
             _buildFormTextFields("Aantal deelnemers"),
             _buildFormTextFields("Locatie"),
             _buildFormTextFields("Begintijd"),
@@ -122,7 +122,7 @@ class MyCustomFormState extends State<MyCustomForm> {
     );
   }
 
-  Widget buildDropDown(BuildContext context) {
+  Widget buildDropDown() {
     var _myActivity;
     String _myActivityResult;
     return Scaffold(
@@ -153,32 +153,24 @@ class MyCustomFormState extends State<MyCustomForm> {
                   },
                   dataSource: [
                     {
-                      "display": "Running",
-                      "value": "Running",
+                      "display": "Voetbal",
+                      "value": "Voetbal",
                     },
                     {
-                      "display": "Climbing",
-                      "value": "Climbing",
+                      "display": "Tennis",
+                      "value": "Tennis",
                     },
                     {
-                      "display": "Walking",
-                      "value": "Walking",
+                      "display": "Lopen",
+                      "value": "Lopen",
                     },
                     {
-                      "display": "Swimming",
-                      "value": "Swimming",
+                      "display": "Zwemmen",
+                      "value": "Zwemmen",
                     },
                     {
-                      "display": "Soccer Practice",
+                      "display": "Basketbal",
                       "value": "Soccer Practice",
-                    },
-                    {
-                      "display": "Baseball Practice",
-                      "value": "Baseball Practice",
-                    },
-                    {
-                      "display": "Football Practice",
-                      "value": "Football Practice",
                     },
                   ],
                   textField: 'display',
