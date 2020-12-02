@@ -30,28 +30,6 @@ class homescreen extends StatefulWidget {
 class _homescreenState extends State<homescreen> {
 
   final HttpService httpService = HttpService();
-
-  String _ipAddress = 'Unknown';
-
-  _getIPAddress() async {
-    String url = httpService.hostname + "/loginscreen";
-    // var httpClient = createHttpClient();
-    var response = await httpService.get(url);
-    Map data = json.decode(response.body);
-    String ip = data['origin'];
-
-    // If the widget was removed from the tree while the message was in flight,
-    // we want to discard the reply rather than calling setState to update our
-    // non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _ipAddress = ip;
-    });
-  }
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
