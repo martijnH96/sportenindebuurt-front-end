@@ -143,15 +143,16 @@ class DynamicallyCheckboxState extends State {
     if (geselecteerdeSport == 'voetbal') {
       List = {
         'Voetbal': false,
-        'Basketbal': false,
-        'Honkbal': false,
+        'Goals': false,
+        'Pionnen': false,
+        'Hesjes': false,
       };
       stop =1;
     } else if(geselecteerdeSport == 'basketbal'){
       List = {
-        'Voetba2l': false,
-        'Basketb2al': false,
-        'Honk2bal': false,
+        'Basketbal': false,
+        'Hesjes': false,
+        'Netjes': false,
       };
       stop =1;
     }
