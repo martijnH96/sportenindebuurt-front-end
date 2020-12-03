@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'homescreen.dart';
+import 'sportlist.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MySportList());
 }
 
 class MyApp extends StatelessWidget {
