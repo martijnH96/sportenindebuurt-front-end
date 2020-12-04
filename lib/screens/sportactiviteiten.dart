@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:calendarro/calendarro.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
@@ -10,38 +10,64 @@ class sportactiviteiten extends StatefulWidget {
 }
 
 class sportactiviteitenState extends State<sportactiviteiten> {
-  String dropdownValue = 'One';
   final ImageProvider youreawakeblur =
   const AssetImage('assets/images/heythereblur.jpg');
   final _formKey = GlobalKey<FormState>();
-  Completer<GoogleMapController> _controller = Completer();
-  static final CameraPosition _kHome = CameraPosition(
-    target: LatLng(51.98475177056764, 5.913200119947337),
-    zoom: 14.4746,
-    tilt: 59.440717697143555,
-  );
-  static final CameraPosition _kSchool = CameraPosition(
-    target: LatLng(51.989148239414384, 5.949366111923605),
-    zoom: 14.4746,
-    tilt: 59.440717697143555,
-    // bearing: 192.8334901395799,
-  );
 
-  Future<void> _toSchool() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kSchool));
-  }
   List _myActivities;
-  String _myActivitiesResult;
+  List<String> startTimes = new List();
+  List<String>  endTimes = new List();
 
-  var pickedDate;
+  int starttime = 0;
+  int endtime = 1;
+  int available = 2;
+
+  var maandag = [
+      "00:00",
+      "00:15",
+    false
+  ];
+  var dinsdag = [
+    "00:00",
+    "00:15",
+    false
+  ];
+  var woensdag = [
+    "00:00",
+    "00:15",
+    false
+  ];
+  var donderdag = [
+    "00:00",
+    "00:15",
+    false
+  ];
+  var vrijdag = [
+    "00:00",
+    "00:15",
+    false
+  ];
+  var zaterdag = [
+    "00:00",
+    "00:15",
+    false
+  ];
+  var zondag = [
+    "00:00",
+    "00:15",
+    false
+  ];
 
   @override
   void initState() {
     super.initState();
     _myActivities = [];
-    _myActivitiesResult = '';
-    pickedDate = DateTime.now();
+    for(int i = 00; i < 24; i++){
+      for(int j = 00; j < 4; j++){
+        startTimes.add((i.toString().length == 1 ? "0"+i.toString() : i.toString()) + ":" + ((j*15).toString().length == 1 ? j.toString()+"0" : (j*15).toString()));
+        endTimes.add((i.toString().length == 1 ? "0"+i.toString() : i.toString()) + ":" + ((j*15).toString().length == 1 ? j.toString()+"0" : (j*15).toString()));
+      }
+    }
   }
 
   _saveForm() {
@@ -49,7 +75,7 @@ class sportactiviteitenState extends State<sportactiviteiten> {
     if (form.validate()) {
       form.save();
       setState(() {
-        _myActivitiesResult = _myActivities.toString();
+        //
       });
 
     }
@@ -122,28 +148,423 @@ class sportactiviteitenState extends State<sportactiviteiten> {
                   setState(() {
                     _myActivities = value;
                   });
+                  // _saveForm();
                 },
               ),
             ),
             Container(
-              padding: EdgeInsets.all(8),
-              child: RaisedButton(
-                child: Text('Save'),
-                onPressed: _saveForm,
+              padding:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Maandag: "),
+                  DropdownButton<String>(
+
+                      value: maandag[starttime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          maandag[starttime] = newValue;
+                        });
+                      },
+                      items: startTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Text("---"),
+                  DropdownButton<String>(
+
+                      value: maandag[endtime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          maandag[endtime] = newValue;
+                        });
+                      },
+                      items: endTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Checkbox(
+                      value: maandag[available],
+                      onChanged: (bool checked){
+                        setState(() {
+                          maandag[available] = checked;
+                        });
+                      }
+                  ),
+                ],
               ),
             ),
             Container(
-              padding: EdgeInsets.all(16),
-              child: Text(_myActivitiesResult),
-            ),
+              padding:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Dinsdag: "),
+                  DropdownButton<String>(
 
+                      value: dinsdag[starttime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dinsdag[starttime] = newValue;
+                        });
+                      },
+                      items: startTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Text("---"),
+                  DropdownButton<String>(
+
+                      value: dinsdag[endtime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dinsdag[endtime] = newValue;
+                        });
+                      },
+                      items: endTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Checkbox(
+                      value: dinsdag[available],
+                      onChanged: (bool checked){
+                        setState(() {
+                          dinsdag[available] = checked;
+                        });
+                      }
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Woensdag: "),
+                  DropdownButton<String>(
+
+                      value: woensdag[starttime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          woensdag[starttime] = newValue;
+                        });
+                      },
+                      items: startTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Text("---"),
+                  DropdownButton<String>(
+
+                      value: woensdag[endtime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          woensdag[endtime] = newValue;
+                        });
+                      },
+                      items: endTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Checkbox(
+                      value: woensdag[available],
+                      onChanged: (bool checked){
+                        setState(() {
+                          woensdag[available] = checked;
+                        });
+                      }
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Donderdag: "),
+                  DropdownButton<String>(
+
+                      value: donderdag[starttime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          donderdag[starttime] = newValue;
+                        });
+                      },
+                      items: startTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Text("---"),
+                  DropdownButton<String>(
+
+                      value: donderdag[endtime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          donderdag[endtime] = newValue;
+                        });
+                      },
+                      items: endTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Checkbox(
+                      value: donderdag[available],
+                      onChanged: (bool checked){
+                        setState(() {
+                          donderdag[available] = checked;
+                        });
+                      }
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Vrijdag: "),
+                  DropdownButton<String>(
+
+                      value: vrijdag[starttime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          vrijdag[starttime] = newValue;
+                        });
+                      },
+                      items: startTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Text("---"),
+                  DropdownButton<String>(
+
+                      value: vrijdag[endtime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          vrijdag[endtime] = newValue;
+                        });
+                      },
+                      items: endTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Checkbox(
+                      value: vrijdag[available],
+                      onChanged: (bool checked){
+                        setState(() {
+                          vrijdag[available] = checked;
+                        });
+                      }
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Zaterdag: "),
+                  DropdownButton<String>(
+
+                      value: zaterdag[starttime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          zaterdag[starttime] = newValue;
+                        });
+                      },
+                      items: startTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Text("---"),
+                  DropdownButton<String>(
+
+                      value: zaterdag[endtime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          zaterdag[endtime] = newValue;
+                        });
+                      },
+                      items: endTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Checkbox(
+                      value: zaterdag[available],
+                      onChanged: (bool checked){
+                        setState(() {
+                          zaterdag[available] = checked;
+                        });
+                      }
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding:
+              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Zondag: "),
+                  DropdownButton<String>(
+
+                      value: zondag[starttime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          zondag[starttime] = newValue;
+                        });
+                      },
+                      items: startTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Text("---"),
+                  DropdownButton<String>(
+
+                      value: zondag[endtime],
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 42,
+                      underline: SizedBox(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          zondag[endtime] = newValue;
+                        });
+                      },
+                      items: endTimes.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList()),
+                  Checkbox(
+                      value: zondag[available],
+                      onChanged: (bool checked){
+                        setState(() {
+                          zondag[available] = checked;
+                        });
+                      }
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 33,
+              child: RaisedButton(
+                onPressed: () async{
+
+                },
+                child: Text("VOEG VOORKEUREN TOE"),
+              ),
+            ),
           ],
         )
     );
-  }
-
-  Widget buildotherForm(int i){
-    return new Text(_myActivities[i]);
   }
 
   Widget buildDropDown() {
@@ -151,48 +572,12 @@ class sportactiviteitenState extends State<sportactiviteiten> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SportenForm(),
-          Expanded(
-              child: new ListView.builder
-                (
-                  itemCount: _myActivities.length,
-
-                  itemBuilder: (BuildContext ctxt, int Index) {
-                    return new Container(
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Text(_myActivities[Index]),
-                            onTap: _pickDate,
-                          ),
-                        Text(pickedDate.toString())
-                        ],
-                      ),
-
-                    );
-                  }
-              )
-          ),
         ],
       );
   }
 
-  _pickDate() async {
-    DateTime date = await showDatePicker(
-        context: context,
-        initialDate: pickedDate,
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year+1)
-    );
-    if(date != null){
-      setState(() {
-        pickedDate = date;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(20.0),
@@ -203,9 +588,66 @@ class sportactiviteitenState extends State<sportactiviteiten> {
             fit: BoxFit.cover,
           ),
         ),
-
         child: buildDropDown(),
       )
     );
   }
 }
+
+// Completer<GoogleMapController> _controller = Completer();
+// static final CameraPosition _kHome = CameraPosition(
+//   target: LatLng(51.98475177056764, 5.913200119947337),
+//   zoom: 14.4746,
+//   tilt: 59.440717697143555,
+// );
+// static final CameraPosition _kSchool = CameraPosition(
+//   target: LatLng(51.989148239414384, 5.949366111923605),
+//   zoom: 14.4746,
+//   tilt: 59.440717697143555,
+//   // bearing: 192.8334901395799,
+// );
+//
+// Future<void> _toSchool() async {
+//   final GoogleMapController controller = await _controller.future;
+//   controller.animateCamera(CameraUpdate.newCameraPosition(_kSchool));
+// }
+
+// Expanded(
+//     child: ListView.builder
+//       (
+//         itemCount: _myActivities.length,
+//         itemBuilder: (BuildContext context, int i) {
+//           return new Container(
+//             child: Column(
+//               children: [
+//                 ListTile(
+//                   title: Text(_myActivities[i]),
+//                   // onTap: _pickDate,
+//                 ),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.end,
+//                 children: [
+//                   RaisedButton(
+//                       onPressed: (){
+//                         showDatePicker(
+//                             context: context,
+//                             initialDate: pickedDates[i],
+//                             firstDate: DateTime.now(),
+//                             lastDate: DateTime(DateTime.now().year+1)
+//                         ).then((value) {
+//                           setState(() {
+//                             pickedDates[i] = value;
+//                           });
+//                         });
+//                       }
+//                   ),
+//                 ],
+//               ),
+//               Text(pickedDates[i].toString())
+//               ],
+//             ),
+//
+//           );
+//         }
+//     )
+// ),

@@ -67,6 +67,7 @@ class LoginFormState extends State<LoginForm> {
                 return null;
               }
             },
+            obscureText: true,
             cursorColor: Theme.of(context).cursorColor,
             initialValue: '',
             decoration: InputDecoration(
