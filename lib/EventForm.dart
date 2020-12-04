@@ -7,7 +7,7 @@ void main() => runApp(EventForm());
 class EventForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTitle = 'Form Validation Demo';
+    final appTitle = 'Event aanmaken';
 
     return MaterialApp(
       title: appTitle,
@@ -45,9 +45,16 @@ class MyCustomFormState extends State<MyCustomForm> {
     return Form(
       key: _formKey,
       child: Column(
+        // welke textvelden hebben we nodig van de gebruiker?
+        // welke sport, aantal mensen, locatie?, tijd: begin en eind?, speelniveau.
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          getTextFormFields(),
+          //buildDropDown(context),
+          _buildFormTextFields("Aantal deelnemers"),
+          _buildFormTextFields("Locatie"),
+          _buildFormTextFields("Begintijd"),
+          _buildFormTextFields("Eindtijd"),
+          _buildFormTextFields("Speelniveau"),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
@@ -80,32 +87,13 @@ class MyCustomFormState extends State<MyCustomForm> {
     );
   }
 
-
   Widget submitButton = Container(
       child: Text('Submit')
   );
 
-  Widget getTextFormFields() {
-    return Container(
-      // welke textvelden hebben we nodig van de gebruiker?
-      // welke sport, aantal mensen, locatie?, tijd: begin en eind?, speelniveau.
-
-        child: Column (mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget> [
-            buildDropDown(),
-            _buildFormTextFields("Aantal deelnemers"),
-            _buildFormTextFields("Locatie"),
-            _buildFormTextFields("Begintijd"),
-            _buildFormTextFields("Eindtijd"),
-            _buildFormTextFields("Speelniveau"),
-          ],
-        )
-    );
-  }
-
   Column _buildFormTextFields(String label) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize. min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
@@ -118,13 +106,15 @@ class MyCustomFormState extends State<MyCustomForm> {
             ),
           ),
         ),
+            buildTextFormField()
       ],
     );
   }
 
-  Widget buildDropDown() {
+  Widget buildDropDown(BuildContext context) {
     var _myActivity;
     String _myActivityResult;
+    final formKey = new GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Dropdown Formfield Example'),
@@ -153,24 +143,32 @@ class MyCustomFormState extends State<MyCustomForm> {
                   },
                   dataSource: [
                     {
-                      "display": "Voetbal",
-                      "value": "Voetbal",
+                      "display": "Running",
+                      "value": "Running",
                     },
                     {
-                      "display": "Tennis",
-                      "value": "Tennis",
+                      "display": "Climbing",
+                      "value": "Climbing",
                     },
                     {
-                      "display": "Lopen",
-                      "value": "Lopen",
+                      "display": "Walking",
+                      "value": "Walking",
                     },
                     {
-                      "display": "Zwemmen",
-                      "value": "Zwemmen",
+                      "display": "Swimming",
+                      "value": "Swimming",
                     },
                     {
-                      "display": "Basketbal",
+                      "display": "Soccer Practice",
                       "value": "Soccer Practice",
+                    },
+                    {
+                      "display": "Baseball Practice",
+                      "value": "Baseball Practice",
+                    },
+                    {
+                      "display": "Football Practice",
+                      "value": "Football Practice",
                     },
                   ],
                   textField: 'display',
