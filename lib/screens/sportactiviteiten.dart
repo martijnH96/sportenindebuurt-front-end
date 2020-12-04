@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:calendarro/calendarro.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
@@ -15,58 +16,30 @@ class sportactiviteitenState extends State<sportactiviteiten> {
   final _formKey = GlobalKey<FormState>();
 
   List _myActivities;
-  List<String> startTimes = new List();
-  List<String>  endTimes = new List();
 
-  int starttime = 0;
-  int endtime = 1;
-  int available = 2;
 
-  var maandag = [
-      "00:00",
-      "00:15",
-    false
-  ];
-  var dinsdag = [
+  final int starttime = 0;
+  final int endtime = 1;
+  final int available = 2;
+  final int day = 3;
+
+  final ValueNotifier dayAndTimeSettings = ValueNotifier(0);
+
+  var timeSettings = [
     "00:00",
     "00:15",
-    false
+    false,
+    "Maandag"
   ];
-  var woensdag = [
-    "00:00",
-    "00:15",
-    false
-  ];
-  var donderdag = [
-    "00:00",
-    "00:15",
-    false
-  ];
-  var vrijdag = [
-    "00:00",
-    "00:15",
-    false
-  ];
-  var zaterdag = [
-    "00:00",
-    "00:15",
-    false
-  ];
-  var zondag = [
-    "00:00",
-    "00:15",
-    false
-  ];
+
+  Map mapped = Map<int, List>();
 
   @override
   void initState() {
     super.initState();
     _myActivities = [];
-    for(int i = 00; i < 24; i++){
-      for(int j = 00; j < 4; j++){
-        startTimes.add((i.toString().length == 1 ? "0"+i.toString() : i.toString()) + ":" + ((j*15).toString().length == 1 ? j.toString()+"0" : (j*15).toString()));
-        endTimes.add((i.toString().length == 1 ? "0"+i.toString() : i.toString()) + ":" + ((j*15).toString().length == 1 ? j.toString()+"0" : (j*15).toString()));
-      }
+    for(int i = 1; i <= dayAndTimeSettings.value; i++){
+      mapped[i] = {i : timeSettings};
     }
   }
 
@@ -152,418 +125,135 @@ class sportactiviteitenState extends State<sportactiviteiten> {
                 },
               ),
             ),
-            Container(
-              padding:
-              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Maandag: "),
-                  DropdownButton<String>(
-
-                      value: maandag[starttime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          maandag[starttime] = newValue;
-                        });
-                      },
-                      items: startTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Text("---"),
-                  DropdownButton<String>(
-
-                      value: maandag[endtime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          maandag[endtime] = newValue;
-                        });
-                      },
-                      items: endTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Checkbox(
-                      value: maandag[available],
-                      onChanged: (bool checked){
-                        setState(() {
-                          maandag[available] = checked;
-                        });
-                      }
-                  ),
-                ],
-              ),
+            ValueListenableBuilder(
+              builder: (BuildContext context, dynamic value, Widget child){
+                return buildTimeFrame(value);
+              },
+              valueListenable: dayAndTimeSettings,
             ),
-            Container(
-              padding:
-              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Dinsdag: "),
-                  DropdownButton<String>(
-
-                      value: dinsdag[starttime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dinsdag[starttime] = newValue;
-                        });
-                      },
-                      items: startTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Text("---"),
-                  DropdownButton<String>(
-
-                      value: dinsdag[endtime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dinsdag[endtime] = newValue;
-                        });
-                      },
-                      items: endTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Checkbox(
-                      value: dinsdag[available],
-                      onChanged: (bool checked){
-                        setState(() {
-                          dinsdag[available] = checked;
-                        });
-                      }
-                  ),
-                ],
-              ),
+            RaisedButton(
+                onPressed: () => dayAndTimeSettings.value++,
+              child: Text("Meer!"),
             ),
-            Container(
-              padding:
-              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Woensdag: "),
-                  DropdownButton<String>(
+            // buildTimeFrame(1),
+            Builder(
+                builder: (BuildContext context){
+                  return Container(
+                    padding: EdgeInsets.all(16),
+                    width: double.infinity,
+                    child: SizedBox(
+                      height: 33,
+                      child: RaisedButton(
+                        onPressed: () async{
+                          Scaffold.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(mapped.toString()),
+                              // duration: Duration(seconds: 1),
+                            ),
+                          );
 
-                      value: woensdag[starttime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          woensdag[starttime] = newValue;
-                        });
-                      },
-                      items: startTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Text("---"),
-                  DropdownButton<String>(
-
-                      value: woensdag[endtime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          woensdag[endtime] = newValue;
-                        });
-                      },
-                      items: endTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Checkbox(
-                      value: woensdag[available],
-                      onChanged: (bool checked){
-                        setState(() {
-                          woensdag[available] = checked;
-                        });
-                      }
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding:
-              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Donderdag: "),
-                  DropdownButton<String>(
-
-                      value: donderdag[starttime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          donderdag[starttime] = newValue;
-                        });
-                      },
-                      items: startTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Text("---"),
-                  DropdownButton<String>(
-
-                      value: donderdag[endtime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          donderdag[endtime] = newValue;
-                        });
-                      },
-                      items: endTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Checkbox(
-                      value: donderdag[available],
-                      onChanged: (bool checked){
-                        setState(() {
-                          donderdag[available] = checked;
-                        });
-                      }
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding:
-              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Vrijdag: "),
-                  DropdownButton<String>(
-
-                      value: vrijdag[starttime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          vrijdag[starttime] = newValue;
-                        });
-                      },
-                      items: startTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Text("---"),
-                  DropdownButton<String>(
-
-                      value: vrijdag[endtime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          vrijdag[endtime] = newValue;
-                        });
-                      },
-                      items: endTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Checkbox(
-                      value: vrijdag[available],
-                      onChanged: (bool checked){
-                        setState(() {
-                          vrijdag[available] = checked;
-                        });
-                      }
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding:
-              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Zaterdag: "),
-                  DropdownButton<String>(
-
-                      value: zaterdag[starttime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          zaterdag[starttime] = newValue;
-                        });
-                      },
-                      items: startTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Text("---"),
-                  DropdownButton<String>(
-
-                      value: zaterdag[endtime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          zaterdag[endtime] = newValue;
-                        });
-                      },
-                      items: endTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Checkbox(
-                      value: zaterdag[available],
-                      onChanged: (bool checked){
-                        setState(() {
-                          zaterdag[available] = checked;
-                        });
-                      }
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding:
-              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Zondag: "),
-                  DropdownButton<String>(
-
-                      value: zondag[starttime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          zondag[starttime] = newValue;
-                        });
-                      },
-                      items: startTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Text("---"),
-                  DropdownButton<String>(
-
-                      value: zondag[endtime],
-                      icon: Icon(Icons.arrow_drop_down),
-                      iconSize: 42,
-                      underline: SizedBox(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          zondag[endtime] = newValue;
-                        });
-                      },
-                      items: endTimes.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList()),
-                  Checkbox(
-                      value: zondag[available],
-                      onChanged: (bool checked){
-                        setState(() {
-                          zondag[available] = checked;
-                        });
-                      }
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 33,
-              child: RaisedButton(
-                onPressed: () async{
-
-                },
-                child: Text("VOEG VOORKEUREN TOE"),
-              ),
-            ),
+                        },
+                        child: Text("VOEG VOORKEUREN TOE"),
+                      ),
+                    ),
+                  );
+                }
+            )
           ],
         )
+    );
+  }
+
+
+  Widget buildTimeFrame(int i){
+    var days = [
+      "Maandag",
+      "Dinsdag",
+      "Woensdag",
+      "Donderdag",
+      "Vrijdag",
+      "Zaterdag",
+      "Zondag",
+    ];
+    var daytimeSettings = mapped.values.elementAt(i);
+    // var daytimeSettings = values[i];
+
+    List<String> startTimes = new List();
+    List<String> endTimes = new List();
+    for(int i = 00; i < 24; i++){
+      for(int j = 00; j < 4; j++){
+        startTimes.add((i.toString().length == 1 ? "0"+i.toString() : i.toString()) + ":" + ((j*15).toString().length == 1 ? j.toString()+"0" : (j*15).toString()));
+        endTimes.add((i.toString().length == 1 ? "0"+i.toString() : i.toString()) + ":" + ((j*15).toString().length == 1 ? j.toString()+"0" : (j*15).toString()));
+      }
+    }
+    return Container(
+      padding:
+      EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          DropdownButton<String>(
+              value: daytimeSettings[day],
+              icon: Icon(Icons.arrow_drop_down),
+              iconSize: 42,
+              underline: SizedBox(),
+              onChanged: (String newValue) {
+                setState(() {
+                  daytimeSettings[day] = newValue;
+                });
+              },
+              items: days.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList()),
+          DropdownButton<String>(
+              value: daytimeSettings[starttime],
+              icon: Icon(Icons.arrow_drop_down),
+              iconSize: 42,
+              underline: SizedBox(),
+              onChanged: (String newValue) {
+                setState(() {
+                  daytimeSettings[starttime] = newValue;
+                });
+              },
+              items: startTimes.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList()),
+          DropdownButton<String>(
+              value: daytimeSettings[endtime],
+              icon: Icon(Icons.arrow_drop_down),
+              iconSize: 42,
+              underline: SizedBox(),
+              onChanged: (String newValue) {
+                setState(() {
+                  daytimeSettings[endtime] = newValue;
+                });
+              },
+              items: endTimes.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList()),
+          // Checkbox(
+          //     value: daytimeSettings[available],
+          //     onChanged: (bool checked){
+          //       setState(() {
+          //         daytimeSettings[available] = checked;
+          //       });
+          //     }
+          // ),
+        ],
+      ),
     );
   }
 
@@ -580,7 +270,7 @@ class sportactiviteitenState extends State<sportactiviteiten> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(20.0),
+        // padding: EdgeInsets.all(20.0),
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
           image: DecorationImage(
