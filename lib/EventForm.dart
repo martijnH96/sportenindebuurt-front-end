@@ -8,15 +8,25 @@ class EventForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTitle = 'Event aanmaken';
+    final ImageProvider doYouEvenLift =
+    const AssetImage('assets/images/weightlifting.jpg');
 
     return MaterialApp(
       title: appTitle,
-      home: Scaffold(
-        appBar: AppBar(
+      home: Container(
+        decoration: BoxDecoration(
+        image: DecorationImage(
+        image: doYouEvenLift, fit: BoxFit.cover)),
+    child: Scaffold(
+    backgroundColor: Colors.transparent,
+    appBar: AppBar(
+    elevation: 0,
+    backgroundColor: Colors.transparent,
           title: Text(appTitle),
         ),
         body: MyCustomForm(),
       ),
+    )
     );
   }
 }
@@ -26,7 +36,6 @@ class MyCustomForm extends StatefulWidget {
   @override
   MyCustomFormState createState() => MyCustomFormState();
 }
-
 // Create a corresponding State class.
 // This class holds data related to the form.
 class MyCustomFormState extends State<MyCustomForm> {
@@ -100,7 +109,7 @@ class MyCustomFormState extends State<MyCustomForm> {
           child: Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 15,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -109,28 +118,9 @@ class MyCustomFormState extends State<MyCustomForm> {
       ],
     );
   }
-  var _myActivity; //deze staan lokaal - hier kan je dus niks mee in je code naast dat het een opvul plaats is. >>> zet deze buiten de functie
-  String _myActivityResult; // dit ook - Het gaat niet veranderen wanneer je een andere item selecteert. >>>>>>>>>>>^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-
-  // Widget buildDropDown(BuildContext context) { //Wanneer wordt deze uberhaupt aangeroepen? Staat nergens in de code. - context hoeft ook niet per se mee
-    Widget buildDropDown(){
-    // var _myActivity; //deze staan lokaal - hier kan je dus niks mee in je code naast dat het een opvul plaats is. >>> zet deze buiten de functie
-    // String _myActivityResult; // dit ook - Het gaat niet veranderen wanneer je een andere item selecteert. >>>>>>>>>>>^^^^^^^^^^^^^^^^^^^^^^^^^^
-    // final formKey = new GlobalKey<FormState>(); //hoeft al niet - je hebt al een global key
-    // return Column( 2x Column achter elkaar - is niet nodig aangezien hij al een Parent heeft van Form of iets.
-    //   appBar: AppBar( //dit moet weg - je hebt al een AppBar met 'Event aanmaken'
-      //   title: Text('Dropdown Formfield Example'),
-      // ),
-      // children: [
-      //   Center(
-      //   child: Form( hoeft niet nog een form te maken wanneer de widget al in een form staat
-        //   key: _formKey,
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.start,
-        //     children: <Widget>[
-              return Container( //ik zou gewoon een container terug sturen (hij staat al in een Column) - dan behoud hij gewoon de vormgeving van de andere objecten. Kan je natuurlijk veranderen, dat is aan jou
+  var _myActivity;
+  Widget buildDropDown(){
+              return Container(
                 padding: EdgeInsets.all(16),
                 child: DropDownFormField(
                   titleText: 'Mijn sport',
