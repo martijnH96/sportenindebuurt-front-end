@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:Sporten_in_de_buurt/http/HttpService.dart';
-import 'package:Sporten_in_de_buurt/screens/sportactiviteiten.dart';
+import 'package:Sporten_in_de_buurt/screens/sportSelectionScreen.dart';
+import 'package:Sporten_in_de_buurt/sport/homescreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -131,7 +132,7 @@ class LoginFormState extends State<LoginForm> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => sportactiviteiten()));
+                              builder: (context) => sportSelectionScreen()));
                     }
                   }
                 }
