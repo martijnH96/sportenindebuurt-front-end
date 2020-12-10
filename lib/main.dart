@@ -1,6 +1,8 @@
+import 'package:Sporten_in_de_buurt/screens/preferenceScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'screens/homescreen.dart';
+import 'screens/sportSelectionScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/': (context) => homescreen(),
+        '/': (context) => PreferenceScreen(),
       },
     );
   }

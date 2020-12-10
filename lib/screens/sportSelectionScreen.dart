@@ -1,10 +1,8 @@
-import 'dart:async';
-import 'package:Sporten_in_de_buurt/http/HttpService.dart';
-import 'package:Sporten_in_de_buurt/screens/homescreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
+
+import '../http/HttpService.dart';
 
 class sportSelectionScreen extends StatefulWidget {
   @override
@@ -17,46 +15,20 @@ class sportSelectionScreenState extends State<sportSelectionScreen> {
   final _formKey = GlobalKey<FormState>();
 
   List _myActivities;
-  int sportLevelSettingsAmount = 0;
-
-  Map mapped = Map<int, List>();
-  var MappedList;
 
   get httpService => HttpService;
   @override
   void initState() {
     super.initState();
     _myActivities = [];
-  }
-
-  addRow(){
-    setState(() {
-      sportLevelSettingsAmount = sportLevelSettingsAmount + 1;
-    });
-  }
-  setRows(int i){
-    setState(() {
-      sportLevelSettingsAmount = i;
-    });
-  }
-
-  _saveForm() {
-    var form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      setState(() {
-        //
-      });
-
+    sportMap = {};
+    for(String string in _myActivities){
+      sportMap.putIfAbsent(string, () => new sportLevelWidget(string));
     }
   }
 
-  List<Widget> _sportLevels;
-
+  Map sportMap;
   Widget sportSelection(){
-    _sportLevels = new List.generate(sportLevelSettingsAmount, (index) => new sportLevelWidget(_myActivities[index]));
-    Map map = Map.fromIterable(_sportLevels, key: (k) => k, value: (v) => v);
-
     return Form(
         key: _formKey,
         child: Column(
@@ -122,8 +94,18 @@ class sportSelectionScreenState extends State<sportSelectionScreen> {
                 onSaved: (value) {
                   if (value == null) return;
                   setState(() {
+                    List difference = _myActivities.toSet().difference(value.toSet()).toList();
+                    for(String string in value){
+                      if(!sportMap.containsKey(string)){
+                        sportMap.putIfAbsent(string, () => new sportLevelWidget(string));
+                      }
+                    }
+                    for(String string in difference){
+                      if(sportMap.containsKey(string)){
+                        sportMap.removeWhere((key, value) => key == string);
+                      }
+                    }
                     _myActivities = value;
-                    setRows(_myActivities.length);
                   });
                   // _saveForm();
                 },
@@ -143,9 +125,37 @@ class sportSelectionScreenState extends State<sportSelectionScreen> {
             height: 400.0,
             padding: EdgeInsets.all(16),
             child: new ListView(
-              children: _sportLevels,
+              children: sportMap.entries.map<Widget>((entry){
+                var w = entry.value;
+                return w;
+                // return w != null ? w : null;
+              }).toList(),
             ),
           ),
+          Builder(
+              builder: (BuildContext context){
+                return Container(
+                  padding: EdgeInsets.all(16),
+                  width: double.infinity,
+                  child: SizedBox(
+                    height: 33,
+                    child: RaisedButton(
+                      onPressed: () async{
+                        final response = await httpService.post("/sport", sportMap);
+                        // for(timeFrameWidget widget in _timeFrames){
+                        //   Scaffold.of(context).showSnackBar(
+                        //     SnackBar(
+                        //       content: Text(widget.timeSettings.toString()),
+                        //     ),
+                        //   );
+                        // }
+                      },
+                      child: Text("VOEG VOORKEUREN TOE"),
+                    ),
+                  ),
+                );
+              }
+          )
         ],
       );
   }
@@ -154,7 +164,6 @@ class sportSelectionScreenState extends State<sportSelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // padding: EdgeInsets.all(20.0),
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
           image: DecorationImage(
