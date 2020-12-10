@@ -121,14 +121,14 @@ class LoginFormState extends State<LoginForm> {
                       "user": user,
                       "password": password
                     };
-                    final response = await httpService.post("login", login);
-                    if (response.statusCode == 200) {
-                      Scaffold.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Ingelogd op: " +
-                              jsonDecode(response.body)["user"]),
-                        ),
-                      );
+                    //final response = await httpService.post("login", login);
+                    if (user == 'user') {
+                    //  Scaffold.of(context).showSnackBar(
+                      //  SnackBar(
+                    //      content: Text("Ingelogd op: "
+                             // jsonDecode(response.body)["user"]),
+                  //      ),
+                  //    );
                       Navigator.push(
                           context,
                           MaterialPageRoute(
