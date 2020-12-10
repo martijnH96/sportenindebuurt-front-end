@@ -40,7 +40,7 @@ class LoginFormState extends State<LoginForm> {
         children: <Widget>[
           TextFormField(
             validator: (value) {
-              if (!value.isEmpty) {
+              if (value.isEmpty) {
                 return 'Vul a.u.b iets in';
               } else {
                 user = value;
@@ -60,13 +60,14 @@ class LoginFormState extends State<LoginForm> {
           ),
           TextFormField(
             validator: (value) {
-              if (!value.isEmpty) {
+              if (value.isEmpty) {
                 return 'Vul a.u.b iets in';
               } else {
                 password = value;
                 return null;
               }
             },
+            obscureText: true,
             cursorColor: Theme.of(context).cursorColor,
             initialValue: '',
             decoration: InputDecoration(
@@ -101,7 +102,6 @@ class LoginFormState extends State<LoginForm> {
                       ),
                     ]),
               )),
-          // ),
           SizedBox(
             width: double.infinity,
             child: RaisedButton(
