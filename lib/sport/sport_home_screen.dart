@@ -1,12 +1,14 @@
 import 'dart:ui';
+import 'package:Sporten_in_de_buurt/screens/sportlist.dart';
 import 'package:Sporten_in_de_buurt/sport/calendar_popup_view.dart';
 import 'package:Sporten_in_de_buurt/sport/sport_list_view.dart';
 import 'package:Sporten_in_de_buurt/sport/model/sport_list_data.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'sport_app_theme.dart';
-//import 'package:titled_navigation_bar/titled_navigation_bar.dart';
+import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
 class SportHomeScreen extends StatefulWidget {
   @override
@@ -275,6 +277,11 @@ class _SportHomeScreenState extends State<SportHomeScreen>
                     ),
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MySportListView()));
+
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -313,6 +320,92 @@ class _SportHomeScreenState extends State<SportHomeScreen>
     );
   }
 
+  void showOptions(BuildContext context){
+    var _myActivities;
+    showDialog<dynamic>(
+      context: context,
+      child: MultiSelectFormField(
+        autovalidate: false,
+        fillColor: Colors.transparent,
+        chipBackGroundColor: Colors.green,
+        chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
+        checkBoxActiveColor: Colors.green,
+        checkBoxCheckColor: Colors.white,
+        dialogShapeBorder: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12.0))),
+        title: Text(
+          "My workouts",
+          style: TextStyle(fontSize: 16),
+        ),
+        validator: (value) {
+          if (value == null || value.length == 0) {
+            return 'Please select one or more options';
+          }
+          return null;
+        },
+        dataSource: [
+          {
+            "display": "Running",
+            "value": "Running",
+          },
+          {
+            "display": "Climbing",
+            "value": "Climbing",
+          },
+          {
+            "display": "Walking",
+            "value": "Walking",
+          },
+          {
+            "display": "Swimming",
+            "value": "Swimming",
+          },
+          {
+            "display": "Soccer Practice",
+            "value": "Soccer Practice",
+          },
+          {
+            "display": "Baseball Practice",
+            "value": "Baseball Practice",
+          },
+          {
+            "display": "Football Practice",
+            "value": "Football Practice",
+          },
+        ],
+        textField: 'display',
+        valueField: 'value',
+        okButtonLabel: 'OK',
+        cancelButtonLabel: 'CANCEL',
+        hintWidget: Text('Please choose one or more'),
+        initialValue: _myActivities,
+        onSaved: (value) {
+          if (value == null) return;
+          setState(() {
+            _myActivities = value;
+          });
+          // _saveForm();
+        },
+      // ),
+      ),
+      //   barrierDismissible: true,
+      //   minimumDate: DateTime.now(),
+      //   //  maximumDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 10),
+      //   initialEndDate: endDate,
+      //   initialStartDate: startDate,
+      //   onApplyClick: (DateTime startData, DateTime endData) {
+      //     setState(() {
+      //       if (startData != null && endData != null) {
+      //         startDate = startData;
+      //         endDate = endData;
+      //       }
+      //     });
+      //   },
+      //   onCancelClick: () {},
+      // ),
+    );
+  }
 
   void showDemoDialog({BuildContext context}) {
     showDialog<dynamic>(

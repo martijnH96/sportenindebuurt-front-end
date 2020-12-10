@@ -1,3 +1,8 @@
+// import 'dart:html';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
+
 class SportListData {
   SportListData({
     this.imagePath = '',
@@ -10,6 +15,7 @@ class SportListData {
   String titleTxt;
   String subTxt;
   String perNight;
+  //
 
   static List<SportListData> sportList = <SportListData>[
     SportListData(
@@ -44,4 +50,5 @@ class SportListData {
       perNight: "Naar event",
     ),
   ];
+
 }
