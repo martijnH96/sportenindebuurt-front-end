@@ -122,7 +122,7 @@ class LoginFormState extends State<LoginForm> {
                       "user": user,
                       "password": password
                     };
-                    final response = await httpService.post("login", login);
+                    final response = await httpService.post("/login", login);
                     if (response.statusCode == 200) {
                       Scaffold.of(context).showSnackBar(
                         SnackBar(

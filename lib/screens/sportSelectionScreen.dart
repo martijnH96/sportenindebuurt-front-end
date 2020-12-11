@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
@@ -16,7 +18,7 @@ class sportSelectionScreenState extends State<sportSelectionScreen> {
 
   List _myActivities;
 
-  get httpService => HttpService;
+  final HttpService httpService = HttpService();
   @override
   void initState() {
     super.initState();
@@ -141,14 +143,22 @@ class sportSelectionScreenState extends State<sportSelectionScreen> {
                     height: 33,
                     child: RaisedButton(
                       onPressed: () async{
-                        final response = await httpService.post("/sport", sportMap);
-                        // for(timeFrameWidget widget in _timeFrames){
-                        //   Scaffold.of(context).showSnackBar(
-                        //     SnackBar(
-                        //       content: Text(widget.timeSettings.toString()),
-                        //     ),
-                        //   );
-                        // }
+                        var _keyList = sportMap.keys.toList();
+                        var _valueList = sportMap.values.toList();
+                        // final SportDTOList sportDTOList = sportMap.values.toList();
+                        final SportDTOList sportDTOList = SportDTOList(List<SportDTO>.generate(sportMap.length, (index){
+                          sportLevelWidget widget = _valueList[index];
+                          return SportDTO(widget.sportSettings[0], widget.sportSettings[1]);
+                        }), );
+                        final response = await httpService.post("/pref/sports", sportDTOList.toJson());
+                        if(response.statusCode == 200){
+                          Scaffold.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Sport opgeslagen: " +
+                                  jsonDecode(response.body)["sport"] + " " + jsonDecode(response.body)['sportLevel'].toString()),
+                            ),
+                          );
+                        }
                       },
                       child: Text("VOEG VOORKEUREN TOE"),
                     ),
@@ -178,13 +188,13 @@ class sportSelectionScreenState extends State<sportSelectionScreen> {
 }
 class sportLevelWidget extends StatefulWidget {
   sportLevelWidget(String name){
-    sportSettings[1] = name;
+    sportSettings[0] = name;
   }
   @override
   State<StatefulWidget> createState() => new sportLevelWidgetState();
   var sportSettings = [
-    2.0,
     "",
+    2.0,
   ];
 }
 
@@ -194,8 +204,8 @@ class sportLevelWidgetState extends State<sportLevelWidget> {
     this.sportSettings = widget.sportSettings;
   }
   var sportSettings;
-  final int sportLevel = 0;
-  final int sportName = 1;
+  final int sportName = 0;
+  final int sportLevel = 1;
 
   Widget buildings() {
     widget.sportSettings = sportSettings;
@@ -240,6 +250,25 @@ class sportLevelWidgetState extends State<sportLevelWidget> {
   }
 
 }
+
+class SportDTO {
+  String sport;
+  double sportLevel;
+  SportDTO(this.sport, this.sportLevel);
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    "sport" : sport,
+    "sportLevel" : sportLevel,
+  };
+}
+
+class SportDTOList{
+  List<SportDTO> sportsDTOList;
+  SportDTOList(this.sportsDTOList);
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    "sportsDTOList" : sportsDTOList,
+  };
+}
+
 
 // Completer<GoogleMapController> _controller = Completer();
 // static final CameraPosition _kHome = CameraPosition(
