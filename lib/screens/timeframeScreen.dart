@@ -1,9 +1,10 @@
-import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:Sporten_in_de_buurt/http/HttpService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:multiselect_formfield/multiselect_formfield.dart';
+import 'package:http/http.dart';
 
 class timeSelectionScreen extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class timeSelectionScreenState extends State<timeSelectionScreen> {
   const AssetImage('assets/images/heythereblur.jpg');
   final _formKey = GlobalKey<FormState>();
 
-  int dayAndTimeSettingsAmount = 1;
+  int dayAndTimeSettingsAmount = 0;
 
   Map mapped = Map<int, List>();
   var MappedList;
@@ -92,11 +93,16 @@ class timeSelectionScreenState extends State<timeSelectionScreen> {
                       height: 33,
                       child: RaisedButton(
                         onPressed: () async{
-                          final response = await httpService.post("/time", _timeFrames);
+                          List<timeFrameDTO> listDTO;
                           for(timeFrameWidget widget in _timeFrames){
+                            listDTO.add(new timeFrameDTO(widget.timeSettings[0], widget.timeSettings[1], widget.timeSettings[2]));
+                          }
+                          final response = await httpService.post("/time", listDTO);
+                          if(response.statusCode == 200){
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(widget.timeSettings.toString()),
+                                content: Text("Ingelogd op: " +
+                                    jsonDecode(response.body)[response.body]),
                               ),
                             );
                           }
@@ -176,8 +182,7 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
 
   final int starttime = 0;
   final int endtime = 1;
-  final int available = 2;
-  final int day = 3;
+  final int day = 2;
 
 
   var days = [
@@ -254,20 +259,6 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
                   child: Text(value),
                 );
               }).toList()),
-          Container(
-            height: 9,
-            width: 20,
-            child: Checkbox(
-                activeColor: Colors.green,
-                checkColor: Colors.white,
-                value: timeSettings[available],
-                onChanged: (bool checked){
-                  setState(() {
-                    timeSettings[available] = checked;
-                  });
-                }
-            ),
-          ),
         ],
       ),
     );
@@ -277,6 +268,18 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
     return buildings();
   }
 
+}
+
+
+class timeFrameDTO {
+  String beginTime;
+  String endTime;
+  String dayOfWeek;
+  timeFrameDTO(String begin, String end, String day){
+    this.beginTime = begin;
+    this.endTime = end;
+    this.dayOfWeek = day;
+  }
 }
 
 // Completer<GoogleMapController> _controller = Completer();
