@@ -8,6 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'signupscreen.dart';
 
+class Loginscreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: LoginForm(),
+    );
+  }
+}
+
 class LoginForm extends StatefulWidget {
   @override
   LoginFormState createState() {
@@ -221,11 +230,4 @@ class LoginFormState extends State<LoginForm> {
   }
 }
 
-class Loginscreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: LoginForm(),
-    );
-  }
-}
+

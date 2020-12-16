@@ -33,16 +33,6 @@ class timeSelectionScreenState extends State<timeSelectionScreen> {
     });
   }
 
-  _saveForm() {
-    var form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      setState(() {
-        //
-      });
-    }
-  }
-
   List<Widget> _timeFrames;
 
   Widget SportenForm() {
@@ -91,15 +81,18 @@ class timeSelectionScreenState extends State<timeSelectionScreen> {
                   height: 33,
                   child: RaisedButton(
                     onPressed: () async {
-                      final TimeFrameDTOList timeframetolist = TimeFrameDTOList(
+                      final TimeFrameDTOList timeFrameList = TimeFrameDTOList(
                           List<TimeFrameDTO>.generate(_timeFrames.length,
                               (index) {
                         timeFrameWidget widget = _timeFrames[index];
-                        return TimeFrameDTO(widget.timeSettings[0],
-                            widget.timeSettings[1], widget.timeSettings[2]);
+                        final startTime = 0;
+                        final endTime = 1;
+                        final dayOfWeek = 2;
+                        return TimeFrameDTO(widget.timeSettings[startTime],
+                            widget.timeSettings[endTime], widget.timeSettings[dayOfWeek]);
                       }));
                       final response = await httpService.post(
-                          "/pref/time", timeframetolist.toJson());
+                          "/pref/time", timeFrameList.toJson());
                       if (response.statusCode == 200) {
                         Scaffold.of(context).showSnackBar(
                           SnackBar(
@@ -171,23 +164,29 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
                 ":" +
                 ((j * 15).toString().length == 1
                     ? j.toString() + "0"
-                    : (j * 15).toString()));
-        endTimes.add(
-            (i.toString().length == 1 ? "0" + i.toString() : i.toString()) +
-                ":" +
-                ((j * 15).toString().length == 1
-                    ? j.toString() + "0"
-                    : (j * 15).toString()));
+                    : (j * 15).toString())); //Kijkt of het getal 1 cijfer is, zet een 0 voor het cijfer wanneer dit zo is.
+
       }
     }
+    for (int i = 00; i < 24; i++) {
+      for (int j = 00; j < 4; j++) {
+                  endTimes.add(
+                    (i.toString().length == 1 ? "0" + i.toString() : i.toString()) +
+                        ":" +
+                        ((j * 15).toString().length == 1
+                            ? j.toString() + "0"
+                            : (j * 15).toString())); //Kijkt of het getal 1 cijfer is, zet een 0 voor het cijfer wanneer dit zo is.
+      }
+    }
+
     this.timeSettings = widget.timeSettings;
   }
 
   var timeSettings;
 
-  final int starttime = 0;
-  final int endtime = 1;
-  final int day = 2;
+  final int STARTTIME = 0;
+  final int ENDTIME = 1;
+  final int DAY = 2;
 
   var days = [
     "Maandag",
@@ -202,7 +201,7 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
   List<String> startTimes = new List();
   List<String> endTimes = new List();
 
-  Widget buildings() {
+  Widget buildTimeFrame() {
     widget.timeSettings = timeSettings;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -215,13 +214,13 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           DropdownButton<String>(
-              value: timeSettings[day],
+              value: timeSettings[DAY],
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 42,
               underline: SizedBox(),
-              onChanged: (String newValue) {
+              onChanged: (String dayValue) {
                 setState(() {
-                  timeSettings[day] = newValue;
+                  timeSettings[DAY] = dayValue;
                 });
               },
               items: days.map((String value) {
@@ -231,13 +230,13 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
                 );
               }).toList()),
           DropdownButton<String>(
-              value: timeSettings[starttime],
+              value: timeSettings[STARTTIME],
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 42,
               underline: SizedBox(),
-              onChanged: (String newValue) {
+              onChanged: (String startTimeValue) {
                 setState(() {
-                  timeSettings[starttime] = newValue;
+                  timeSettings[STARTTIME] = startTimeValue;
                 });
               },
               items: startTimes.map((String value) {
@@ -247,13 +246,13 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
                 );
               }).toList()),
           DropdownButton<String>(
-              value: timeSettings[endtime],
+              value: timeSettings[ENDTIME],
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 42,
               underline: SizedBox(),
-              onChanged: (String newValue) {
+              onChanged: (String endTimeValue) {
                 setState(() {
-                  timeSettings[endtime] = newValue;
+                  timeSettings[ENDTIME] = endTimeValue;
                 });
               },
               items: endTimes.map((String value) {
@@ -269,7 +268,7 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return buildings();
+    return buildTimeFrame();
   }
 }
 
@@ -277,11 +276,7 @@ class TimeFrameDTO {
   String beginTime;
   String endTime;
   String dayOfWeek;
-  TimeFrameDTO(String begin, String end, String day) {
-    this.beginTime = begin;
-    this.endTime = end;
-    this.dayOfWeek = day;
-  }
+  TimeFrameDTO(this.beginTime, this.endTime, this.dayOfWeek);
   Map<String, dynamic> toJson() => <String, dynamic>{
         "beginTime": beginTime,
         "endTime": endTime,
@@ -295,20 +290,3 @@ class TimeFrameDTOList {
   Map<String, dynamic> toJson() =>
       <String, dynamic>{"timeFrameDTOList": timeFrameList};
 }
-// Completer<GoogleMapController> _controller = Completer();
-// static final CameraPosition _kHome = CameraPosition(
-//   target: LatLng(51.98475177056764, 5.913200119947337),
-//   zoom: 14.4746,
-//   tilt: 59.440717697143555,
-// );
-// static final CameraPosition _kSchool = CameraPosition(
-//   target: LatLng(51.989148239414384, 5.949366111923605),
-//   zoom: 14.4746,
-//   tilt: 59.440717697143555,
-//   // bearing: 192.8334901395799,
-// );
-//
-// Future<void> _toSchool() async {
-//   final GoogleMapController controller = await _controller.future;
-//   controller.animateCamera(CameraUpdate.newCameraPosition(_kSchool));
-// }

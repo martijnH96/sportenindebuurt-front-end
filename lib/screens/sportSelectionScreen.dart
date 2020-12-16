@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Sporten_in_de_buurt/screens/homescreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
@@ -13,24 +14,30 @@ class sportSelectionScreen extends StatefulWidget {
 
 class sportSelectionScreenState extends State<sportSelectionScreen> {
   final ImageProvider youreawakeblur =
-  const AssetImage('assets/images/heythereblur.jpg');
+      const AssetImage('assets/images/heythereblur.jpg');
   final _formKey = GlobalKey<FormState>();
-
   List _myActivities;
-
+  List _sportsList;
+  SportsListDTO sportsListDTO;
   final HttpService httpService = HttpService();
+  Map _sportMap;
+
   @override
   void initState() {
     super.initState();
     _myActivities = [];
-    sportMap = {};
-    for(String string in _myActivities){
-      sportMap.putIfAbsent(string, () => new sportLevelWidget(string));
+    _sportMap = {};
+    for (String activity in _myActivities) {
+      _sportMap.putIfAbsent(activity, () => new sportLevelWidget(activity));
     }
   }
 
-  Map sportMap;
-  Widget sportSelection(){
+  Future<void> _getSportsList() async {
+    final _response = await httpService.get("/sports");
+    _sportsList = jsonDecode(_response.body);
+  }
+
+  Widget _sportSelection() {
     return Form(
         key: _formKey,
         child: Column(
@@ -57,38 +64,9 @@ class sportSelectionScreenState extends State<sportSelectionScreen> {
                   }
                   return null;
                 },
-                dataSource: [
-                  {
-                    "display": "Running",
-                    "value": "Running",
-                  },
-                  {
-                    "display": "Climbing",
-                    "value": "Climbing",
-                  },
-                  {
-                    "display": "Walking",
-                    "value": "Walking",
-                  },
-                  {
-                    "display": "Swimming",
-                    "value": "Swimming",
-                  },
-                  {
-                    "display": "Soccer Practice",
-                    "value": "Soccer Practice",
-                  },
-                  {
-                    "display": "Baseball Practice",
-                    "value": "Baseball Practice",
-                  },
-                  {
-                    "display": "Football Practice",
-                    "value": "Football Practice",
-                  },
-                ],
-                textField: 'display',
-                valueField: 'value',
+                dataSource: _sportsList,
+                textField: 'sport',
+                valueField: 'sport',
                 okButtonLabel: 'OK',
                 cancelButtonLabel: 'CANCEL',
                 hintWidget: Text('Please choose one or more'),
@@ -96,98 +74,103 @@ class sportSelectionScreenState extends State<sportSelectionScreen> {
                 onSaved: (value) {
                   if (value == null) return;
                   setState(() {
-                    List difference = _myActivities.toSet().difference(value.toSet()).toList();
-                    for(String string in value){
-                      if(!sportMap.containsKey(string)){
-                        sportMap.putIfAbsent(string, () => new sportLevelWidget(string));
-                      }
+                    List difference = _myActivities
+                        .toSet()
+                        .difference(value.toSet())
+                        .toList();
+                    for (String string in value) {
+                      _sportMap.putIfAbsent(
+                          string, () => new sportLevelWidget(string));
                     }
-                    for(String string in difference){
-                      if(sportMap.containsKey(string)){
-                        sportMap.removeWhere((key, value) => key == string);
+                    for (String string in difference) {
+                      if (_sportMap.containsKey(string)) {
+                        _sportMap.removeWhere((key, value) => key == string);
                       }
                     }
                     _myActivities = value;
                   });
-                  // _saveForm();
                 },
               ),
             ),
           ],
-        )
-    );
+        ));
   }
 
-  Widget buildDropDown() {
+  Widget _buildEntireForm() {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          sportSelection(),
-          Container(
-            height: 400.0,
-            padding: EdgeInsets.all(16),
-            child: new ListView(
-              children: sportMap.entries.map<Widget>((entry){
-                var w = entry.value;
-                return w;
-                // return w != null ? w : null;
-              }).toList(),
-            ),
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        _sportSelection(),
+        Container(
+          height: 400.0,
+          padding: EdgeInsets.all(16),
+          child: new ListView(
+            children: _sportMap.entries.map<Widget>((entry) {
+              entry.value.sportSettings[0] = entry.key;
+              var w = entry.value;
+              return w;
+            }).toList(),
           ),
-          Builder(
-              builder: (BuildContext context){
-                return Container(
-                  padding: EdgeInsets.all(16),
-                  width: double.infinity,
-                  child: SizedBox(
-                    height: 33,
-                    child: RaisedButton(
-                      onPressed: () async{
-                        var _keyList = sportMap.keys.toList();
-                        var _valueList = sportMap.values.toList();
-                        // final SportDTOList sportDTOList = sportMap.values.toList();
-                        final SportDTOList sportDTOList = SportDTOList(List<SportDTO>.generate(sportMap.length, (index){
-                          sportLevelWidget widget = _valueList[index];
-                          return SportDTO(widget.sportSettings[0], widget.sportSettings[1]);
-                        }), );
-                        final response = await httpService.post("/pref/sports", sportDTOList.toJson());
-                        if(response.statusCode == 200){
-                          Scaffold.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Sport opgeslagen: " +
-                                  jsonDecode(response.body)["sport"] + " " + jsonDecode(response.body)['sportLevel'].toString()),
-                            ),
-                          );
-                        }
-                      },
-                      child: Text("VOEG VOORKEUREN TOE"),
-                    ),
-                  ),
-                );
-              }
-          )
-        ],
-      );
+        ),
+        Builder(builder: (BuildContext context) {
+          return Container(
+            padding: EdgeInsets.all(16),
+            width: double.infinity,
+            child: SizedBox(
+              height: 33,
+              child: RaisedButton(
+                onPressed: () async {
+                  var _valueList = _sportMap.values.toList();
+                  final SportsListDTO sportDTOList = SportsListDTO(
+                    List<SportsDTO>.generate(_sportMap.length, (index) {
+                      sportLevelWidget _widget = _valueList[index];
+                      return SportsDTO(
+                          _widget.sportSettings[0], _widget.sportSettings[1]);
+                    }),
+                  );
+                  final _response = await httpService.post(
+                      "/pref/sports", sportDTOList.toJson());
+                  if (_response.statusCode == 200) {
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Sport opgeslagen: " +
+                            jsonDecode(_response.body)["sport"] +
+                            " " +
+                            jsonDecode(_response.body)['sportLevel']
+                                .toString()),
+                      ),
+                    );
+                  }
+                },
+                child: Text("VOEG VOORKEUREN TOE"),
+              ),
+            ),
+          );
+        }),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    _getSportsList();
     return Scaffold(
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: youreawakeblur,
-            fit: BoxFit.cover,
-          ),
+        body: Container(
+      constraints: BoxConstraints.expand(),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: youreawakeblur,
+          fit: BoxFit.cover,
         ),
-        child: buildDropDown(),
-      )
-    );
+      ),
+      child: _buildEntireForm(),
+    ));
   }
 }
+
+//Maakt een widget aan om voor elke sport een voorkeurs niveau in te stellen.
 class sportLevelWidget extends StatefulWidget {
-  sportLevelWidget(String name){
+  sportLevelWidget(String name) {
     sportSettings[0] = name;
   }
   @override
@@ -199,91 +182,77 @@ class sportLevelWidget extends StatefulWidget {
 }
 
 class sportLevelWidgetState extends State<sportLevelWidget> {
-
-  void initState(){
+  void initState() {
     this.sportSettings = widget.sportSettings;
   }
-  var sportSettings;
-  final int sportName = 0;
-  final int sportLevel = 1;
 
-  Widget buildings() {
+  var sportSettings;
+  final int SPORTNAME = 0;
+  final int SPORTLEVEL = 1;
+
+  Widget buildSportWidget() {
     widget.sportSettings = sportSettings;
     return Container(
-      padding:
-      EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
           color: Colors.transparent,
           border: Border.fromBorderSide(BorderSide()),
-          borderRadius: BorderRadius.circular(10)
-      ),
+          borderRadius: BorderRadius.circular(10)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Align(
-            alignment: Alignment.topCenter,
-            child: Text(sportSettings[sportName])
-          ),
+              alignment: Alignment.topCenter,
+              child: Text(sportSettings[SPORTNAME])),
           Slider(
-              value: sportSettings[sportLevel],
+              value: sportSettings[SPORTLEVEL],
               min: 1,
               max: 10,
-              label: sportSettings[sportLevel].round().toString(),
-              onChanged: (double value){
+              label: sportSettings[SPORTLEVEL].round().toString(),
+              onChanged: (double levelValue) {
                 setState(() {
-                  sportSettings[sportLevel] = value;
+                  sportSettings[SPORTLEVEL] = levelValue;
                 });
-              }
-          ),
+              }),
           Align(
               alignment: Alignment.topCenter,
-              child: Text(sportSettings[sportLevel].round().toString())
-          ),
+              child: Text(sportSettings[SPORTLEVEL].round().toString())),
         ],
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-    return buildings();
+    return buildSportWidget();
   }
-
 }
 
-class SportDTO {
+class SportsDTO {
   String sport;
   double sportLevel;
-  SportDTO(this.sport, this.sportLevel);
+  SportsDTO(this.sport, this.sportLevel);
   Map<String, dynamic> toJson() => <String, dynamic>{
-    "sport" : sport,
-    "sportLevel" : sportLevel,
-  };
+        "sport": sport,
+        "sportLevel": sportLevel,
+      };
 }
 
-class SportDTOList{
-  List<SportDTO> sportsDTOList;
-  SportDTOList(this.sportsDTOList);
+class SportsListDTO {
+  List<SportsDTO> sportsDTOList;
+  SportsListDTO(this.sportsDTOList);
   Map<String, dynamic> toJson() => <String, dynamic>{
-    "sportsDTOList" : sportsDTOList,
-  };
+        "sportsListDTO": sportsDTOList,
+      };
+  Map<String, String> toShowList() {
+    Map<String, String> mapped;
+    for (SportsDTO sportDTO in sportsDTOList) {
+      mapped.putIfAbsent("display", () => sportDTO.sport);
+    }
+    return mapped;
+  }
+
+  SportsListDTO.fromJson(Map json)
+      : sportsDTOList = json.values.cast<SportsDTO>();
 }
-
-
-// Completer<GoogleMapController> _controller = Completer();
-// static final CameraPosition _kHome = CameraPosition(
-//   target: LatLng(51.98475177056764, 5.913200119947337),
-//   zoom: 14.4746,
-//   tilt: 59.440717697143555,
-// );
-// static final CameraPosition _kSchool = CameraPosition(
-//   target: LatLng(51.989148239414384, 5.949366111923605),
-//   zoom: 14.4746,
-//   tilt: 59.440717697143555,
-//   // bearing: 192.8334901395799,
-// );
-//
-// Future<void> _toSchool() async {
-//   final GoogleMapController controller = await _controller.future;
-//   controller.animateCamera(CameraUpdate.newCameraPosition(_kSchool));
-// }

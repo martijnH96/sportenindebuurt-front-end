@@ -20,7 +20,7 @@ class HttpService{
   }
 
   Future<http.Response> get(String url){
-    return http.get(hostname + url);
+    return http.get(hostname + url, headers: getHeaders());
   }
   Future<http.Response> post(String url, Map body) async{
     return http.post(hostname + url, headers: getHeaders(), body: jsonEncode(body));
