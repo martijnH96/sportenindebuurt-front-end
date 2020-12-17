@@ -88,8 +88,8 @@ class timeSelectionScreenState extends State<timeSelectionScreen> {
                         final startTime = 0;
                         final endTime = 1;
                         final dayOfWeek = 2;
-                        return TimeFrameDTO(widget.timeSettings[startTime],
-                            widget.timeSettings[endTime], widget.timeSettings[dayOfWeek]);
+                        return TimeFrameDTO(widget._timeSettings[startTime],
+                            widget._timeSettings[endTime], widget._timeSettings[dayOfWeek]);
                       }));
                       final response = await httpService.post(
                           "/pref/time", timeFrameList.toJson());
@@ -152,43 +152,22 @@ class timeSelectionScreenState extends State<timeSelectionScreen> {
 class timeFrameWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new timeFrameWidgetState();
-  var timeSettings = ["00:00", "00:15", "Maandag"];
+  var _timeSettings = ["00:00", "00:15", "Maandag"];
 }
 
 class timeFrameWidgetState extends State<timeFrameWidget> {
   void initState() {
-    for (int i = 00; i < 24; i++) {
-      for (int j = 00; j < 4; j++) {
-        startTimes.add(
-            (i.toString().length == 1 ? "0" + i.toString() : i.toString()) +
-                ":" +
-                ((j * 15).toString().length == 1
-                    ? j.toString() + "0"
-                    : (j * 15).toString())); //Kijkt of het getal 1 cijfer is, zet een 0 voor het cijfer wanneer dit zo is.
-
-      }
-    }
-    for (int i = 00; i < 24; i++) {
-      for (int j = 00; j < 4; j++) {
-                  endTimes.add(
-                    (i.toString().length == 1 ? "0" + i.toString() : i.toString()) +
-                        ":" +
-                        ((j * 15).toString().length == 1
-                            ? j.toString() + "0"
-                            : (j * 15).toString())); //Kijkt of het getal 1 cijfer is, zet een 0 voor het cijfer wanneer dit zo is.
-      }
-    }
-
-    this.timeSettings = widget.timeSettings;
+    _setTimesForDropDown();
+    this._timeSettings = widget._timeSettings;
   }
 
-  var timeSettings;
+  var _timeSettings;
 
   final int STARTTIME = 0;
   final int ENDTIME = 1;
   final int DAY = 2;
 
-  var days = [
+  var _days = [
     "Maandag",
     "Dinsdag",
     "Woensdag",
@@ -198,11 +177,57 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
     "Zondag",
   ];
 
-  List<String> startTimes = new List();
-  List<String> endTimes = new List();
+  List<String> _startTimes = new List();
+  List<String> _endTimes = new List();
 
-  Widget buildTimeFrame() {
-    widget.timeSettings = timeSettings;
+  _setTimesForDropDown() {
+    for (int i = 00; i < 24; i++) {
+      for (int j = 00; j < 4; j++) {
+        _startTimes.add(
+            (i
+                .toString()
+                .length == 1 ? "0" + i.toString() : i.toString()) +
+                ":" +
+                ((j * 15)
+                    .toString()
+                    .length == 1
+                    ? j.toString() + "0"
+                    : (j * 15)
+                    .toString())); //Kijkt of het getal 1 cijfer is, zet een 0 voor het cijfer wanneer dit zo is.
+        _endTimes.add(
+            (i
+                .toString()
+                .length == 1 ? "0" + i.toString() : i.toString()) +
+                ":" +
+                ((j * 15)
+                    .toString()
+                    .length == 1
+                    ? j.toString() + "0"
+                    : (j * 15)
+                    .toString())); //Kijkt of het getal 1 cijfer is, zet een 0 voor het cijfer wanneer dit zo is.
+
+      }
+    }
+  }
+
+  List<String>setEndTimeForDropDown(String beginTime){
+    List<String> _times = new List();
+    var splitter = beginTime.split(":");
+    for (int i = (int.parse(splitter[0]).round()); i < 24; i++) {
+      for (int j = (int.parse(splitter[1]).round()); j < 60; j+=15) {
+        _times.add(
+            (i.toString().length == 1 ? "0" + i.toString() : i.toString()) +
+                ":" +
+                (j.toString().length == 1
+                    ? j.toString() + "0"
+                    : j .toString())); //Kijkt of het getal 1 cijfer is, zet een 0 voor het cijfer wanneer dit zo is.
+      }
+    }
+    return _times;
+  }
+
+  Widget _buildTimeFrame() {
+    widget._timeSettings = _timeSettings;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       margin: EdgeInsets.all(10),
@@ -214,48 +239,50 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           DropdownButton<String>(
-              value: timeSettings[DAY],
+              value: _timeSettings[DAY],
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 42,
               underline: SizedBox(),
               onChanged: (String dayValue) {
                 setState(() {
-                  timeSettings[DAY] = dayValue;
+                  _timeSettings[DAY] = dayValue;
                 });
               },
-              items: days.map((String value) {
+              items: _days.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
               }).toList()),
           DropdownButton<String>(
-              value: timeSettings[STARTTIME],
+              value: _timeSettings[STARTTIME],
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 42,
               underline: SizedBox(),
               onChanged: (String startTimeValue) {
                 setState(() {
-                  timeSettings[STARTTIME] = startTimeValue;
+                  _timeSettings[STARTTIME] = startTimeValue;
+                  _endTimes = setEndTimeForDropDown(startTimeValue);
+                  _timeSettings[ENDTIME] = _endTimes.first;
                 });
               },
-              items: startTimes.map((String value) {
+              items: _startTimes.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
               }).toList()),
           DropdownButton<String>(
-              value: timeSettings[ENDTIME],
+              value: _timeSettings[ENDTIME],
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 42,
               underline: SizedBox(),
               onChanged: (String endTimeValue) {
                 setState(() {
-                  timeSettings[ENDTIME] = endTimeValue;
+                  _timeSettings[ENDTIME] = endTimeValue;
                 });
               },
-              items: endTimes.map((String value) {
+              items: _endTimes.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
@@ -268,7 +295,7 @@ class timeFrameWidgetState extends State<timeFrameWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return buildTimeFrame();
+    return _buildTimeFrame();
   }
 }
 
