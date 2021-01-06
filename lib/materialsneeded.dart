@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 const White = const Color(0xffffffff);
 const Black = const Color(0xFF000000);
-final ImageProvider sportlijstimage =
+const Purple = const Color(0xFFAB47BC);
+final ImageProvider materialsneededimage =
 const AssetImage('assets/images/materialsneeded.jpg');
 Map<String, bool> List = {
   'Voetbal': false,
@@ -50,7 +51,14 @@ class HomeScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold, color: Black),
         ),
       ),
-      body: Center(
+        body: Container(
+        decoration: BoxDecoration(
+    image: DecorationImage(
+    image: materialsneededimage,
+    fit: BoxFit.cover,
+    ),
+    ),
+    child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -77,6 +85,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+        ),
     );
   }
 }
@@ -163,7 +172,15 @@ class DynamicallyCheckboxState extends State {
   @override
   Widget build(BuildContext context) {
 
-    return Column(children: <Widget>[
+    return Container(
+        decoration: BoxDecoration(
+        image: DecorationImage(
+        image: materialsneededimage,
+        fit: BoxFit.cover,
+    ),
+    ),
+
+    child: Column (children: <Widget>[
       Expanded(
         child:
         ListView(
@@ -173,8 +190,8 @@ class DynamicallyCheckboxState extends State {
                 style: TextStyle(fontWeight: FontWeight.bold, color: Black),
               ),
               value: List[key],
-              activeColor: Colors.deepPurple[400],
-              checkColor: Colors.white,
+              activeColor: Purple,
+              checkColor: White,
               onChanged: (bool value) {
                 setState(() {
                   List[key] = value;
@@ -184,6 +201,8 @@ class DynamicallyCheckboxState extends State {
           }).toList(),
         ),
       ),
-    ]);
+    ]
+    ),
+    );
   }
 }
