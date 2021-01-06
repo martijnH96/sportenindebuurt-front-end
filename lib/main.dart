@@ -17,7 +17,10 @@ import 'people.dart';
 
 void main() {
   runApp(MaterialApp(
-    title: 'Named Routes Demo',
+    title: 'People',
+    theme: ThemeData(
+      primaryColor: White,
+    ),
     initialRoute: '/',
     routes: {
       '/': (context) => FirstScreen(),
