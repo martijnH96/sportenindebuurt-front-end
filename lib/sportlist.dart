@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const PrimaryColor = const Color(0xFF151026);
+
 class MySportList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,9 @@ class MySportList extends StatelessWidget {
           return null;
         },
         title: 'Navigation with Arguments',
+        theme: ThemeData(
+          primaryColor: const Color(0xffffffff),
+        ),
         home: HomeScreen(),
         routes: {
           ExtractArgumentsScreen.routeName: (context) =>
@@ -32,15 +37,24 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
-        title: Text('Home Screen'),
+        title: Text('Home Screen',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1)),
+        ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              child: Text("Voetbal"),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white, // background
+                onPrimary: Colors.white, // foreground
+              ),
+              child: Text("Voetbal",
+        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1)),
+              ),
               onPressed: () {
                 stop =0;
                 Navigator.pushNamed(
@@ -54,7 +68,13 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ElevatedButton(
-              child: Text("Basketbal"),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white, // background
+                onPrimary: Colors.white, // foreground
+              ),
+              child: Text("Basketbal",
+                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1)),
+              ),
               onPressed: () {
                 stop =0;
                 Navigator.pushNamed(
@@ -82,6 +102,7 @@ class ExtractArgumentsScreen extends StatelessWidget {
     final ScreenArguments args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
         title: Text(args.title),
       ),
@@ -109,6 +130,7 @@ class PassArgumentsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     geselecteerdeSport = sport;
     return Scaffold(
+      backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
         title: Text(title),
       ),
@@ -184,7 +206,9 @@ class DynamicallyCheckboxState extends State {
         ListView(
           children: List.keys.map((String key) {
             return new CheckboxListTile(
-              title: new Text(key),
+              title: new Text(key,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               value: List[key],
               activeColor: Colors.deepPurple[400],
               checkColor: Colors.white,
