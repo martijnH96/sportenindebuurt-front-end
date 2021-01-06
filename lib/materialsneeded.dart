@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 
+const White = const Color(0xffffffff);
+const Black = const Color(0xFF000000);
+final ImageProvider sportlijstimage =
+const AssetImage('assets/images/materialsneeded.jpg');
 Map<String, bool> List = {
   'Voetbal': false,
   'Goals': false,
-  'Water': false,
+  'Hesjes': false,
 };
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        theme: ThemeData(
+          primaryColor: White,
+        ),
         onGenerateRoute: (settings) {
           if (settings.name == PassArgumentsScreen.routeName) {
             final ScreenArguments args = settings.arguments;
@@ -22,10 +29,10 @@ class MyApp extends StatelessWidget {
               },
             );
           }
-          assert(false, 'Need to implement ${settings.name}');
+          assert(false);
           return null;
         },
-        title: 'Navigation with Arguments',
+        title: 'Materialen',
         home: HomeScreen(),
         routes: {
           ExtractArgumentsScreen.routeName: (context) =>
@@ -39,14 +46,22 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Screen'),
+        title: Text('Materialen',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Black),
+        ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              child: Text("Voetbal"),
+              style: ElevatedButton.styleFrom(
+                primary: White, // background
+                onPrimary: White, // foreground
+              ),
+              child: Text("Voetbal",
+                style: TextStyle(fontWeight: FontWeight.bold, color: Black),
+              ),
               onPressed: () {
                 List.removeWhere((key, value) => value == true);
                   Navigator.pushNamed(
@@ -75,10 +90,12 @@ class ExtractArgumentsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(args.title),
+        title: Text(args.title,                style: TextStyle(fontWeight: FontWeight.bold, color: Black),
+      ),
       ),
       body: Center(
-        child: Text(args.sport),
+        child: Text(args.sport,                style: TextStyle(fontWeight: FontWeight.bold, color: Black),
+    ),
       ),
     );
   }
@@ -102,7 +119,9 @@ class PassArgumentsScreen extends StatelessWidget {
     geselecteerdeSport = sport;
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(title,
+          style: TextStyle(fontWeight: FontWeight.bold, color: Black),
+        ),
       ),
       body: Center(
           child: Center(
@@ -150,7 +169,9 @@ class DynamicallyCheckboxState extends State {
         ListView(
           children: List.keys.map((String key) {
             return new CheckboxListTile(
-              title: new Text(key),
+              title: new Text(key,
+                style: TextStyle(fontWeight: FontWeight.bold, color: Black),
+              ),
               value: List[key],
               activeColor: Colors.deepPurple[400],
               checkColor: Colors.white,
