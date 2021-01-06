@@ -13,6 +13,22 @@ List<String> list = [
   'Jos'
 ];
 
+class People extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(title: 'People',
+      theme: ThemeData(
+        primaryColor: White,
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => FirstScreen(),
+        '/second': (context) => SecondScreen(),
+      },
+    );
+  }
+}
+
 class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -60,7 +76,14 @@ class SecondScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold, color: Black),
         ),
       ),
-      body: Center(
+        body: Container(
+        decoration: BoxDecoration(
+    image: DecorationImage(
+    image: sportlijstimage,
+    fit: BoxFit.cover,
+    ),
+    ),
+    child: Center(
           child: new ListView.builder
             (
               itemCount: list.length,
@@ -68,12 +91,13 @@ class SecondScreen extends StatelessWidget {
                 return new ListTile(
                  leading: const Icon(Icons.account_circle_rounded),
                   title: Text((list[Index]),
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Black),
+                  style: TextStyle(fontWeight: FontWeight.bold, color: White),
                 ),
                 );
               }
               ),
-      )
+      ),
+        ),
     );
   }
 }
