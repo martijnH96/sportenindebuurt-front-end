@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 const PrimaryColor = const Color(0xFF151026);
-final ImageProvider youreawakeblur =
+const White = const Color(0xffffffff);
+const Black = const Color(0xFF000000);
+const Purple = const Color(0xFFAB47BC);
+final ImageProvider sportlijstimage =
 const AssetImage('assets/images/sportlist.jpg');
 
 class MySportList extends StatelessWidget {
@@ -20,12 +23,12 @@ class MySportList extends StatelessWidget {
               },
             );
           }
-          assert(false, 'Need to implement ${settings.name}');
+          assert(false);
           return null;
         },
-        title: 'Navigation with Arguments',
+        title: 'Sport Lijst',
         theme: ThemeData(
-          primaryColor: const Color(0xffffffff),
+          primaryColor: White,
         ),
         home: HomeScreen(),
         routes: {
@@ -39,16 +42,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffffffff),
+      backgroundColor: White,
       appBar: AppBar(
         title: Text('Sport Lijst',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1)),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Black),
         ),
       ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: youreawakeblur,
+            image: sportlijstimage,
             fit: BoxFit.cover,
           ),
         ),
@@ -58,11 +61,11 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.white, // background
-                onPrimary: Colors.white, // foreground
+                primary: White, // background
+                onPrimary: White, // foreground
               ),
               child: Text("Voetbal",
-        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1)),
+        style: TextStyle(fontWeight: FontWeight.bold, color: Black),
               ),
               onPressed: () {
                 stop =0;
@@ -78,11 +81,11 @@ class HomeScreen extends StatelessWidget {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.white, // background
-                onPrimary: Colors.white, // foreground
+                primary: White, // background
+                onPrimary: White, // foreground
               ),
               child: Text("Basketbal",
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1)),
+                style: TextStyle(fontWeight: FontWeight.bold, color: Black),
               ),
               onPressed: () {
                 stop =0;
@@ -112,7 +115,7 @@ class ExtractArgumentsScreen extends StatelessWidget {
     final ScreenArguments args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      backgroundColor: const Color(0xffffffff),
+      backgroundColor: White,
       appBar: AppBar(
         title: Text(args.title),
       ),
@@ -140,7 +143,7 @@ class PassArgumentsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     geselecteerdeSport = sport;
     return Scaffold(
-      backgroundColor: const Color(0xffffffff),
+      backgroundColor: White,
       appBar: AppBar(
         title: Text(title),
       ),
@@ -213,7 +216,7 @@ class DynamicallyCheckboxState extends State {
     return Container(
       decoration: BoxDecoration(
       image: DecorationImage(
-      image: youreawakeblur,
+      image: sportlijstimage,
       fit: BoxFit.cover,
     ),
     ),
@@ -225,11 +228,11 @@ class DynamicallyCheckboxState extends State {
           children: List.keys.map((String key) {
             return new CheckboxListTile(
               title: new Text(key,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, color: White),
               ),
               value: List[key],
-              activeColor: Colors.deepPurple[400],
-              checkColor: Colors.white,
+              activeColor: Purple,
+              checkColor: White,
               onChanged: (bool value) {
                 setState(() {
                   List[key] = value;
