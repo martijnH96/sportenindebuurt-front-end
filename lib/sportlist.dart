@@ -226,18 +226,10 @@ class DynamicallyCheckboxState extends State {
         child:
         ListView(
           children: List.keys.map((String key) {
-            return new CheckboxListTile(
+            return new ListTile(
               title: new Text(key,
                 style: TextStyle(fontWeight: FontWeight.bold, color: White),
               ),
-              value: List[key],
-              activeColor: Purple,
-              checkColor: White,
-              onChanged: (bool value) {
-                setState(() {
-                  List[key] = value;
-                });
-              },
             );
           }).toList(),
         ),
@@ -248,3 +240,5 @@ class DynamicallyCheckboxState extends State {
     );
   }
 }
+
+
