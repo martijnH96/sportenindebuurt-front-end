@@ -4,7 +4,7 @@ const PrimaryColor = const Color(0xFF151026);
 const White = const Color(0xffffffff);
 const Black = const Color(0xFF000000);
 const Purple = const Color(0xFFAB47BC);
-final ImageProvider sportlijstimage =
+final ImageProvider sportlistimage =
 const AssetImage('assets/images/sportlist.jpg');
 
 class MySportList extends StatelessWidget {
@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: sportlijstimage,
+            image: sportlistimage,
             fit: BoxFit.cover,
           ),
         ),
@@ -216,7 +216,7 @@ class DynamicallyCheckboxState extends State {
     return Container(
       decoration: BoxDecoration(
       image: DecorationImage(
-      image: sportlijstimage,
+      image: sportlistimage,
       fit: BoxFit.cover,
     ),
     ),
