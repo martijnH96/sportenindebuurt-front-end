@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 const PrimaryColor = const Color(0xFF151026);
+final ImageProvider youreawakeblur =
+const AssetImage('assets/images/sportlist.jpg');
 
 class MySportList extends StatelessWidget {
   @override
@@ -39,11 +41,18 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
-        title: Text('Home Screen',
+        title: Text('Sport Lijst',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(1)),
         ),
       ),
-      body: Center(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: youreawakeblur,
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -89,6 +98,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }
@@ -200,7 +210,15 @@ class DynamicallyCheckboxState extends State {
       stop =1;
     }
     // selecteerSport();
-    return Column(children: <Widget>[
+    return Container(
+      decoration: BoxDecoration(
+      image: DecorationImage(
+      image: youreawakeblur,
+      fit: BoxFit.cover,
+    ),
+    ),
+
+        child: Column (children: <Widget>[
       Expanded(
         child:
         ListView(
@@ -221,6 +239,9 @@ class DynamicallyCheckboxState extends State {
           }).toList(),
         ),
       ),
-    ]);
+    ]
+        ),
+
+    );
   }
 }
