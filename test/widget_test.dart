@@ -3,31 +3,45 @@ import 'package:flutter_test/flutter_test.dart';
 
 
 void main() {
-  // group('Counter', () {
-  //   test('value should start at 0', () {
-  //     expect(Counter().value, 0);
-  //   });
-  //
-  //   test('value should be incremented', () {
-  //     final counter = Counter();
-  //
-  //     counter.increment();
-  //
-  //     expect(counter.value, 1);
-  //   });
-  //
-  //   test('value should be decremented', () {
-  //     final counter = Counter();
-  //
-  //     counter.decrement();
-  //
-  //     expect(counter.value, -1);
-  //   });
-  // });
+  group('Remove', (){
+    test('remove from array when all atributes are false', () {
+      Map<String, bool> List = {
+        'Voetbal': false,
+        'Goals': false,
+        'Water': false,
+      };
 
-  test('remove from array when atribute is true', (){
-    getList();
+      RemoveFromList removeFromList = new RemoveFromList();
+      removeFromList.remove(List);
+
+      expect(List, {'Voetbal': false, 'Goals': false, 'Water': false});
+    });
+
+    test('remove from array when an atribute is true', () {
+      Map<String, bool> List = {
+        'Voetbal': false,
+        'Goals': true,
+        'Water': false,
+      };
+
+      RemoveFromList removeFromList = new RemoveFromList();
+      removeFromList.remove(List);
+
+      expect(List, {'Voetbal': false, 'Water': false});
+    });
+
+    test('remove from array when all atributes are true', () {
+      Map<String, bool> List = {
+        'Voetbal': true,
+        'Goals': true,
+        'Water': true,
+      };
+
+      RemoveFromList removeFromList = new RemoveFromList();
+      removeFromList.remove(List);
+
+      expect(List, {});
+    });
   });
-
 
 }

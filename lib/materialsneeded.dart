@@ -75,7 +75,6 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 RemoveFromList removeFromList = new RemoveFromList();
                 removeFromList.remove(List);
-                // List.removeWhere((key, value) => value == true);
                   Navigator.pushNamed(
                   context,
                   PassArgumentsScreen.routeName,
