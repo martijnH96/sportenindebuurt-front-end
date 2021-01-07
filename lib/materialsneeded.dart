@@ -22,10 +22,10 @@ class MyApp extends StatelessWidget {
               },
             );
           }
-          assert(false, 'Need to implement ${settings.name}');
+          assert(false);
           return null;
         },
-        title: 'Navigation with Arguments',
+        title: 'Materialen nodig',
         home: HomeScreen(),
         routes: {
           ExtractArgumentsScreen.routeName: (context) =>
@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Screen'),
+        title: Text('Materialen nodig'),
       ),
       body: Center(
         child: Column(
