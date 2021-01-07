@@ -172,27 +172,6 @@ var stop =0;
 
 class DynamicallyCheckboxState extends State {
 
-  Map<String, bool> List;
-
-  selecteerSport() {
-    if (geselecteerdeSport == 'voetbal') {
-      List = {
-        'Voetbal': false,
-        'Goals': false,
-        'Pionnen': false,
-        'Hesjes': false,
-      };
-      stop =1;
-    } else if(geselecteerdeSport == 'basketbal'){
-      List = {
-        'Basketbal': false,
-        'Hesjes': false,
-        'Netjes': false,
-      };
-      stop =1;
-    }
-  }
-
   var holder_1 = [];
 
   getItems() {
@@ -208,10 +187,12 @@ class DynamicallyCheckboxState extends State {
 
   @override
   Widget build(BuildContext context) {
-    if(stop == 0){
-      selecteerSport();
-      stop =1;
-    }
+    // if(stop == 0){
+      SelectSport selectSport = new SelectSport();
+      selectSport.sportSelect(geselecteerdeSport);
+      // selecteerSport();
+    //   stop =1;
+    // }
     // selecteerSport();
     return Container(
       decoration: BoxDecoration(
@@ -236,9 +217,34 @@ class DynamicallyCheckboxState extends State {
       ),
     ]
         ),
-
     );
   }
 }
 
+Map<String, bool> List;
 
+class SelectSport{
+
+  Map sportSelect(String geselecteerdeSport) {
+    if (geselecteerdeSport == 'voetbal') {
+      List = {
+        'Voetbal': false,
+        'Goals': false,
+        'Pionnen': false,
+        'Hesjes': false,
+      };
+      return List;
+      // stop =1;
+    } else if(geselecteerdeSport == 'basketbal'){
+      List = {
+        'Basketbal': false,
+        'Hesjes': false,
+        'Netjes': false,
+      };
+      return List;
+      // stop =1;
+    } else {
+      throw("No Sport Error");
+    }
+  }
+}
