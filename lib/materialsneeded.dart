@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
+const PrimaryColor = const Color(0xFF151026);
+const White = const Color(0xffffffff);
+const Black = const Color(0xFF000000);
+const Purple = const Color(0xFFAB47BC);
+final ImageProvider materialsneededimage =
+const AssetImage('assets/images/materialsneeded.jpg');
 Map<String, bool> List = {
   'Voetbal': false,
   'Goals': false,
   'Water': false,
 };
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -26,6 +33,9 @@ class MyApp extends StatelessWidget {
           return null;
         },
         title: 'Materialen nodig',
+        theme: ThemeData(
+          primaryColor: White,
+        ),
         home: HomeScreen(),
         routes: {
           ExtractArgumentsScreen.routeName: (context) =>
@@ -39,16 +49,33 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Materialen nodig'),
+        title: Text('Materialen nodig',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Black),
       ),
-      body: Center(
+      ),
+      body: Container(
+      decoration: BoxDecoration(
+    image: DecorationImage(
+    image: materialsneededimage,
+    fit: BoxFit.cover,
+    ),
+    ),
+    child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              child: Text("Voetbal"),
+              style: ElevatedButton.styleFrom(
+                primary: White, // background
+                onPrimary: White, // foreground
+              ),
+              child: Text("Voetbal",
+                style: TextStyle(fontWeight: FontWeight.bold, color: Black),
+              ),
               onPressed: () {
-                List.removeWhere((key, value) => value == true);
+                RemoveFromList removeFromList = new RemoveFromList();
+                removeFromList.remove(List);
+                // List.removeWhere((key, value) => value == true);
                   Navigator.pushNamed(
                   context,
                   PassArgumentsScreen.routeName,
@@ -62,6 +89,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }
@@ -74,6 +102,7 @@ class ExtractArgumentsScreen extends StatelessWidget {
     final ScreenArguments args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
+      backgroundColor: White,
       appBar: AppBar(
         title: Text(args.title),
       ),
@@ -143,17 +172,26 @@ class DynamicallyCheckboxState extends State {
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+        image: DecorationImage(
+        image: materialsneededimage,
+        fit: BoxFit.cover,
+    ),
+    ),
 
-    return Column(children: <Widget>[
+    child: Column (children: <Widget>[
       Expanded(
         child:
         ListView(
           children: List.keys.map((String key) {
             return new CheckboxListTile(
-              title: new Text(key),
+              title: new Text(key,
+                style: TextStyle(fontWeight: FontWeight.bold, color: Black),
+              ),
               value: List[key],
-              activeColor: Colors.deepPurple[400],
-              checkColor: Colors.white,
+              activeColor: Purple,
+              checkColor: White,
               onChanged: (bool value) {
                 setState(() {
                   List[key] = value;
@@ -163,6 +201,15 @@ class DynamicallyCheckboxState extends State {
           }).toList(),
         ),
       ),
-    ]);
+    ],
+    ),
+    );
+  }
+}
+
+class RemoveFromList {
+
+  void remove(Map list) {
+    list.removeWhere((key, value) => value == true);
   }
 }

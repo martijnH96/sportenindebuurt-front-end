@@ -1,4 +1,5 @@
 import 'package:Sporten_in_de_buurt/materialsneeded.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 
 void main() {
@@ -24,7 +25,9 @@ void main() {
   //   });
   // });
 
-
+  test('remove from array when atribute is true', (){
+    getList();
+  });
 
 
 }
