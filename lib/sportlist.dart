@@ -187,13 +187,10 @@ class DynamicallyCheckboxState extends State {
 
   @override
   Widget build(BuildContext context) {
-    // if(stop == 0){
+
       SelectSport selectSport = new SelectSport();
       selectSport.sportSelect(geselecteerdeSport);
-      // selecteerSport();
-    //   stop =1;
-    // }
-    // selecteerSport();
+
     return Container(
       decoration: BoxDecoration(
       image: DecorationImage(
@@ -244,7 +241,7 @@ class SelectSport{
       return List;
       // stop =1;
     } else {
-      throw("No Sport Error");
+      throw new ArgumentError("No Sport Error");
     }
   }
 }
