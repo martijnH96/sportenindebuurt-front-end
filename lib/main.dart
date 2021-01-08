@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'homescreen.dart';
-import 'sportlist.dart';
+import 'screens/homescreen.dart';
 
 void main() {
   runApp(MyApp());
