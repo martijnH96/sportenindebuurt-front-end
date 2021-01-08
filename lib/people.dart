@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 const White = const Color(0xffffffff);
 const Black = const Color(0xFF000000);
-final ImageProvider sportlijstimage =
+final ImageProvider peoplelistimage =
 const AssetImage('assets/images/peoplelist.jpg');
-List<String> list = [
+List<String> peoplelist = [
   'Henk',
   'Evelien',
   'Jet',
@@ -22,14 +22,14 @@ class People extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => FirstScreen(),
-        '/second': (context) => SecondScreen(),
+        '/': (context) => PeopleFirstKnobScreen(),
+        '/second': (context) => PeopleViewSecondScreen(),
       },
     );
   }
 }
 
-class FirstScreen extends StatelessWidget {
+class PeopleFirstKnobScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +42,7 @@ class FirstScreen extends StatelessWidget {
         body: Container(
         decoration: BoxDecoration(
         image: DecorationImage(
-        image: sportlijstimage,
+        image: peoplelistimage,
         fit: BoxFit.cover,
         ),
         ),
@@ -66,7 +66,7 @@ class FirstScreen extends StatelessWidget {
   }
 }
 
-class SecondScreen extends StatelessWidget {
+class PeopleViewSecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,18 +79,18 @@ class SecondScreen extends StatelessWidget {
         body: Container(
         decoration: BoxDecoration(
     image: DecorationImage(
-    image: sportlijstimage,
+    image: peoplelistimage,
     fit: BoxFit.cover,
     ),
     ),
     child: Center(
           child: new ListView.builder
             (
-              itemCount: list.length,
+              itemCount: peoplelist.length,
               itemBuilder: (BuildContext ctxt, int Index) {
                 return new ListTile(
                  leading: const Icon(Icons.account_circle_rounded),
-                  title: Text((list[Index]),
+                  title: Text((peoplelist[Index]),
                   style: TextStyle(fontWeight: FontWeight.bold, color: White),
                 ),
                 );
