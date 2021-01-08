@@ -3,7 +3,7 @@ import 'homescreen.dart';
 import 'sportlist.dart';
 
 void main() {
-  runApp(MySportList());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
