@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'materialsneeded.dart';
+import 'homescreen.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: homescreen(),
-//     );
-//   }
-// }
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+
+      routes: {
+        '/': (context) => homescreen(),
+      },
+    );
+  }
+}
+

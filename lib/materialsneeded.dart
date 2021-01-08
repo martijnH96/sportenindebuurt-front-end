@@ -13,7 +13,7 @@ Map<String, bool> List = {
 };
 
 
-class MyApp extends StatelessWidget {
+class MaterialsNeeded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
