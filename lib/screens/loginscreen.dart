@@ -52,7 +52,7 @@ class LoginFormState extends State<LoginForm> {
               labelStyle: TextStyle(
                 color: Colors.black,
               ),
-              labelText: "Username",
+              labelText: "E-mail adres",
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.black, width: 1.0),
               ),
@@ -130,6 +130,12 @@ class LoginFormState extends State<LoginForm> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => sportactiviteiten()));
+                    } else {
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Onjuiste e-mail en/of wachtwoord."),
+                        ),
+                      );
                     }
                   }
                 }
