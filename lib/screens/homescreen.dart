@@ -1,24 +1,35 @@
+import 'package:Sporten_in_de_buurt/http/HttpService.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
-import './loginscreen.dart';
 import 'package:adobe_xd/page_link.dart';
-import './signupscreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:convert';
+// import 'package:http/http.dart' as http;
 
-class homescreen extends StatelessWidget {
-  final ImageProvider youreawake;
+import 'loginscreen.dart';
+import 'signupscreen.dart';
+
+final ImageProvider youreawake = const AssetImage('assets/images/heythere.jpg');
+final String sport = 'Sporten in de \nbuurt';
+final Color wit = const Color(0xffffffff);
+final HOME_URL = "/";
+
+class homescreen extends StatefulWidget {
   final VoidCallback login;
   final VoidCallback maakaccountaan;
-  final String sport;
-  final Color wit;
   homescreen({
     Key key,
-    this.youreawake = const AssetImage('assets/images/heythere.jpg'),
     this.login,
     this.maakaccountaan,
-    this.sport = 'Sporten in de \nbuurt',
-    this.wit = const Color(0xffffffff),
   }) : super(key: key);
+
+  @override
+  _homescreenState createState() => _homescreenState();
+}
+
+class _homescreenState extends State<homescreen> {
+
+  final HttpService httpService = HttpService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,41 +39,32 @@ class homescreen extends StatelessWidget {
           Pinned.fromSize(
             bounds: Rect.fromLTWH(-45.0, -17.0, 450.0, 675.0),
             size: Size(360.0, 640.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            pinBottom: true,
             child:
-                // Adobe XD layer: 'pexels-photo-126319' (shape)
-                Container(
+            // Adobe XD layer: 'pexels-photo-126319' (shape)
+            Container(
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: youreawake,
-                  fit: BoxFit.cover,
-                ),
+                image:
+                DecorationImage(image: youreawake, fit: BoxFit.fitHeight),
               ),
             ),
           ),
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(57.0, 526.0, 247.0, 50.0),
+            bounds: Rect.fromLTWH(75.0, 526.0, 247.0, 50.0),
             size: Size(360.0, 640.0),
-            pinBottom: true,
+            pinLeft: true,
             fixedWidth: true,
             fixedHeight: true,
             child:
-                // Adobe XD layer: 'Login' (group)
-                GestureDetector(
-              onTap: () => login?.call(),
+            // Adobe XD layer: 'Login' (group)
+            GestureDetector(
+              onTap: () => widget.login?.call(),
               child: PageLink(
                 links: [
                   PageLinkInfo(
                     transition: LinkTransition.Fade,
                     ease: Curves.easeOut,
                     duration: 0.3,
-                    pageBuilder: () => loginscreen(
-                      youreawakeblur:
-                          const AssetImage('assets/images/heythereblur.jpg'),
-                    ),
+                    pageBuilder: () => Loginscreen(),
                   ),
                 ],
                 child: Stack(
@@ -71,12 +73,11 @@ class homescreen extends StatelessWidget {
                       bounds: Rect.fromLTWH(0.0, 0.0, 247.0, 50.0),
                       size: Size(247.0, 50.0),
                       pinLeft: true,
-                      pinRight: true,
-                      pinTop: true,
-                      pinBottom: true,
+                      fixedWidth: true,
+                      fixedHeight: true,
                       child:
-                          // Adobe XD layer: 'rectangle-13' (shape)
-                          SvgPicture.string(
+                      // Adobe XD layer: 'rectangle-13' (shape)
+                      SvgPicture.string(
                         _svg_pk18kn,
                         allowDrawingOutsideViewBox: true,
                         fit: BoxFit.fill,
@@ -88,9 +89,9 @@ class homescreen extends StatelessWidget {
                       fixedWidth: true,
                       fixedHeight: true,
                       child:
-                          // Adobe XD layer: 'Text' (text)
-                          Text(
-                        'LOGIN',
+                      // Adobe XD layer: 'Text' (text)
+                      Text(
+                        "LOGIN",
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 13,
@@ -111,46 +112,44 @@ class homescreen extends StatelessWidget {
             fixedWidth: true,
             fixedHeight: true,
             child:
-                // Adobe XD layer: 'Signup' (group)
-                GestureDetector(
-              onTap: () => maakaccountaan?.call(),
+            // Adobe XD layer: 'Signup' (group)
+            GestureDetector(
+              // onTap: () => widget.maakaccountaan?.call(),
               child: PageLink(
                 links: [
                   PageLinkInfo(
                     transition: LinkTransition.Fade,
                     ease: Curves.easeOut,
                     duration: 0.3,
-                    pageBuilder: () => signupscreen(
-                      youreawakeblur:
-                          const AssetImage('assets/images/heythereblur.jpg'),
-                    ),
+                    pageBuilder: () => Signupscreen(),
                   ),
                 ],
+                //
                 child: Stack(
                   children: <Widget>[
                     Pinned.fromSize(
                       bounds: Rect.fromLTWH(0.0, 0.0, 247.0, 50.0),
-                      size: Size(247.0, 50.0),
+                      size: Size(250.0, 50.0),
                       pinLeft: true,
-                      pinRight: true,
-                      pinTop: true,
-                      pinBottom: true,
+                      fixedWidth: true,
+                      fixedHeight: true,
                       child:
-                          // Adobe XD layer: 'rectangle-13' (shape)
-                          SvgPicture.string(
+                      // Adobe XD layer: 'rectangle-13' (shape)
+                      SvgPicture.string(
                         _svg_tedd5l,
                         allowDrawingOutsideViewBox: true,
                         fit: BoxFit.fill,
                       ),
                     ),
                     Pinned.fromSize(
-                      bounds: Rect.fromLTWH(56.0, 17.0, 136.0, 16.0),
-                      size: Size(247.0, 50.0),
+                      bounds: Rect.fromLTWH(50.0, 17.0, 139.0, 16.0),
+                      size: Size(250.0, 50.0),
+                      pinLeft: true,
                       fixedWidth: true,
                       fixedHeight: true,
                       child:
-                          // Adobe XD layer: 'Text' (text)
-                          Text(
+                      // Adobe XD layer: 'Text' (text)
+                      Text(
                         'MAAK ACCOUNT AAN',
                         style: TextStyle(
                           fontFamily: 'Lato',
@@ -158,7 +157,7 @@ class homescreen extends StatelessWidget {
                           color: const Color(0xffffffff),
                           fontWeight: FontWeight.w700,
                         ),
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ],
@@ -170,8 +169,7 @@ class homescreen extends StatelessWidget {
             bounds: Rect.fromLTWH(65.5, 42.0, 240.0, 178.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
-            pinRight: true,
-            pinTop: true,
+            fixedWidth: true,
             fixedHeight: true,
             child: Text(
               sport,
@@ -195,6 +193,7 @@ class homescreen extends StatelessWidget {
     );
   }
 }
+
 
 const String _svg_pk18kn =
     '<svg viewBox="64.0 591.0 247.0 50.0" ><path transform="translate(64.0, 591.0)" d="M 10 0 L 237 0 C 242.5228424072266 0 247 4.477152347564697 247 10 L 247 40 C 247 45.52284622192383 242.5228424072266 50 237 50 L 10 50 C 4.477152347564697 50 0 45.52284622192383 0 40 L 0 10 C 0 4.477152347564697 4.477152347564697 0 10 0 Z" fill="#2a4755" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
