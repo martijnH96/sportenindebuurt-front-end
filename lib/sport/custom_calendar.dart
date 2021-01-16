@@ -2,8 +2,9 @@ import 'package:Sporten_in_de_buurt/sport/sport_app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CustomCalendarView extends StatefulWidget {
-  const CustomCalendarView(
+//Calender filter on homepage
+class CalendarFilter extends StatefulWidget {
+  const CalendarFilter(
       {Key key,
       this.initialStartDate,
       this.initialEndDate,
@@ -20,10 +21,10 @@ class CustomCalendarView extends StatefulWidget {
   final Function(DateTime, DateTime) startEndDateChange;
 
   @override
-  _CustomCalendarViewState createState() => _CustomCalendarViewState();
+  _CalendarFilterState createState() => _CalendarFilterState();
 }
 
-class _CustomCalendarViewState extends State<CustomCalendarView> {
+class _CalendarFilterState extends State<CalendarFilter> {
   List<DateTime> dateList = <DateTime>[];
   DateTime currentMonthDate = DateTime.now();
   DateTime startDate;
@@ -59,9 +60,7 @@ class _CustomCalendarViewState extends State<CustomCalendarView> {
     for (int i = 0; i < (42 - previousMothDay); i++) {
       dateList.add(newDate.add(Duration(days: i + 1)));
     }
-    // if (dateList[dateList.length - 7].month != monthDate.month) {
-    //   dateList.removeRange(dateList.length - 7, dateList.length);
-    // }
+
   }
 
   @override

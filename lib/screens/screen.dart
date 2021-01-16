@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class Screen extends StatelessWidget {
+class screen extends StatelessWidget {
   String title;
-  Screen({this.title});
+  screen({this.title});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

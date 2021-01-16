@@ -28,3 +28,32 @@ void main() {
     expect(find.text('1'), findsOneWidget);
   });
 }
+/*
+  bottomNavigationBar: BottomNavigationBar(
+    type: BottomNavigationBarType.shifting,
+    key: Key("menu"),
+    items: [
+  BottomNavigationBarItem(
+  icon: Icon(Icons.ac_unit, color: Colors.green,),
+  title: InkWell(child:Text("test1", style: TextStyle(color: Colors.black),key:Key("First")),)
+  ),
+  BottomNavigationBarItem(
+  icon: Icon(Icons.cast, color: Colors.yellow,),
+  title:  InkWell(child:Text("test2", style: TextStyle(color: Colors.black),key:Key("Second")),)
+  )
+  ],
+  ),
+
+
+*/
+/*  test(bottomnavigationbar test`, () async {
+  await driver.waitFor(find.byValueKey("menu"));
+  await driver.tap(find.byValueKey("test1"));
+  print('geklikt op test1');
+  await driver.tap(find.byValueKey("test2"));
+  print('geklikt op test2');
+  });
+
+}
+
+ */

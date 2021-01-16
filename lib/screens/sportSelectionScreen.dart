@@ -74,50 +74,42 @@ class sportSelectionScreenState extends State<sportSelectionScreen> {
                 dialogShapeBorder: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(12.0))),
                 title: Text(
-                  "My workouts",
+                  "Activiteiten",
                   style: TextStyle(fontSize: 16),
                 ),
                 validator: (value) {
                   if (value == null || value.length == 0) {
-                    return 'Please select one or more options';
+                    return 'Kies één of meerdere opties';
                   }
                   return null;
                 },
                 dataSource: [
                   {
-                    "display": "Running",
-                    "value": "Running",
+                    "display": "Hardlopen",
+                    "value": "Hardlopen",
                   },
                   {
-                    "display": "Climbing",
-                    "value": "Climbing",
+                    "display": "Tennis",
+                    "value": "tennis",
                   },
                   {
-                    "display": "Walking",
-                    "value": "Walking",
+                    "display": "Voetbal",
+                    "value": "Voetbal",
                   },
                   {
-                    "display": "Swimming",
-                    "value": "Swimming",
+                    "display": "Basketbal",
+                    "value": "Basketbal",
                   },
                   {
-                    "display": "Soccer Practice",
-                    "value": "Soccer Practice",
-                  },
-                  {
-                    "display": "Baseball Practice",
-                    "value": "Baseball Practice",
-                  },
-                  {
-                    "display": "Football Practice",
-                    "value": "Football Practice",
+                    "display": "Softbal",
+                    "value": "Softbal",
                   },
                 ],
                 textField: 'display',
                 valueField: 'value',
-                okButtonLabel: 'OK',
-                cancelButtonLabel: 'CANCEL',
-                hintWidget: Text('Please choose one or more'),
+                okButtonLabel: 'Verder',
+                cancelButtonLabel: 'Stop',
+                hintWidget: Text('Kies minimaal één'),
                 initialValue: _myActivities,
                 onSaved: (value) {
                   if (value == null) return;

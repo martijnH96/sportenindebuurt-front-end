@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'custom_calendar.dart';
 
+//Calendar pop up
 class CalendarPopupView extends StatefulWidget {
   const CalendarPopupView(
       {Key key,
@@ -174,7 +175,7 @@ class _CalendarPopupViewState extends State<CalendarPopupView>
                             const Divider(
                               height: 1,
                             ),
-                            CustomCalendarView(
+                            CalendarFilter(
                               minimumDate: widget.minimumDate,
                               maximumDate: widget.maximumDate,
                               initialEndDate: widget.initialEndDate,

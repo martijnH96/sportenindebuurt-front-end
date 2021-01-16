@@ -11,7 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((_) => runApp(MyApp()));
-}//Home in zetten om nav bar te laten zien
+}//Home())); to show alternative navigation menu
 
 
 class MyApp extends StatelessWidget{
@@ -26,7 +26,12 @@ class MyApp extends StatelessWidget{
 }
 
 
-//code hieronder is voor een navigatiemenu die op dit moment niet gebruikt word
+
+
+
+
+
+//alternative navigation menu not currently used
 class Home extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -43,22 +48,22 @@ class NavObject {
 
 List<NavObject> navItems = [
   NavObject(
-    screen: Screen(title: "Home"),
+    screen: screen(title: "Home"),
     navIcon: Icon(Icons.home),
     title: Text('Homepagina'),
   ),
   NavObject(
-    screen: Screen(title: "Profiel pagina"),
+    screen: screen(title: "Profiel pagina"),
     navIcon: Icon(Icons.settings),
     title: Text('Profiel pagina'),
   ),
   NavObject(
-    screen: Screen(title: "open map"),
+    screen: screen(title: "open map"),
     navIcon: Icon(Icons.map_outlined),
     title: Text('Open map'),
   ),
   NavObject(
-    screen: Screen(title: "open map"),
+    screen: screen(title: "open map"),
     navIcon: Icon(Icons.map_outlined),
     title: Text('Open map'),
   ),

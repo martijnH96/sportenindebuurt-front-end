@@ -1,10 +1,10 @@
 import 'dart:ui';
-import 'package:Sporten_in_de_buurt/screens/Screen.dart';
+import 'package:Sporten_in_de_buurt/screens/screen.dart';
 import 'package:Sporten_in_de_buurt/screens/loginscreen.dart';
 import 'package:Sporten_in_de_buurt/screens/signupscreen.dart';
 import 'package:Sporten_in_de_buurt/screens/sportlist.dart';
 import 'package:Sporten_in_de_buurt/sport/calendar_popup_view.dart';
-import 'package:Sporten_in_de_buurt/sport/sport_homePage.dart';
+import 'package:Sporten_in_de_buurt/sport/sport_homenavigation.dart';
 import 'package:Sporten_in_de_buurt/sport/sport_list_view.dart';
 import 'package:Sporten_in_de_buurt/sport/model/sport_list_data.dart';
 import 'package:flutter/material.dart';
@@ -19,16 +19,17 @@ class SportHomeScreen extends StatefulWidget {
   _SportHomeScreenState createState() => _SportHomeScreenState();
 }
 
-
+//Navigation options [0] is always left [1] is mid and [2] is right
+//to get a 4th one or more in navigation you can easily add a new one underneath signupscreen(),
 final _pageOptions = [
 
-  SportHomeScreentwee(),
+  SportHomeScreenTwo(),
   Loginscreen(),
   Signupscreen(),
 
 ];
 
-
+//state for screen
 class _SportHomeScreenState extends State<SportHomeScreen>
     with TickerProviderStateMixin {
   AnimationController animationController;
@@ -58,6 +59,7 @@ class _SportHomeScreenState extends State<SportHomeScreen>
     super.dispose();
   }
 
+  //Homepage with navigation menu
   @override
   Widget build(BuildContext context) {
 
@@ -68,10 +70,6 @@ class _SportHomeScreenState extends State<SportHomeScreen>
 
         child: Scaffold(
          body: _pageOptions[selectedPage],
-
-        //bovenste gedeelte weghalen in nieuwe dart bestand stoppen en onderste alleen houden
-
-        //body: _pageOptions[selectedPage],
 
           bottomNavigationBar: BottomNavigationBar(
             items: [
@@ -98,6 +96,7 @@ class _SportHomeScreenState extends State<SportHomeScreen>
     );
   }
 
+  //homepage list cards
   Widget getListUI() {
     return Container(
       decoration: BoxDecoration(
@@ -150,6 +149,7 @@ class _SportHomeScreenState extends State<SportHomeScreen>
     );
   }
 
+  //retrieve all data from sport list and put it inside cards
   Widget getSportViewList() {
     final List<Widget> sportListViews = <Widget>[];
     for (int i = 0; i < sportList.length; i++) {
@@ -175,7 +175,7 @@ class _SportHomeScreenState extends State<SportHomeScreen>
       children: sportListViews,
     );
   }
-
+//display current time for Calendar
   Widget getTimeDateUI() {
     return Padding(
       padding: const EdgeInsets.only(left: 18, bottom: 16),
@@ -301,6 +301,7 @@ class _SportHomeScreenState extends State<SportHomeScreen>
     );
   }
 
+  //sport category show filter at homepage (W.I.P)
   void showOptions(BuildContext context){
     var _myActivities;
     showDialog<dynamic>(
@@ -316,50 +317,42 @@ class _SportHomeScreenState extends State<SportHomeScreen>
         dialogShapeBorder: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12.0))),
         title: Text(
-          "My workouts",
+          "Activiteiten",
           style: TextStyle(fontSize: 16),
         ),
         validator: (value) {
           if (value == null || value.length == 0) {
-            return 'Please select one or more options';
+            return 'Kies één of meerdere opties';
           }
           return null;
         },
         dataSource: [
           {
-            "display": "Running",
-            "value": "Running",
+            "display": "Hardlopen",
+            "value": "Hardlopen",
           },
           {
-            "display": "Climbing",
-            "value": "Climbing",
+            "display": "Tennis",
+            "value": "tennis",
           },
           {
-            "display": "Walking",
-            "value": "Walking",
+            "display": "Voetbal",
+            "value": "Voetbal",
           },
           {
-            "display": "Swimming",
-            "value": "Swimming",
+            "display": "Basketbal",
+            "value": "Basketbal",
           },
           {
-            "display": "Soccer Practice",
-            "value": "Soccer Practice",
-          },
-          {
-            "display": "Baseball Practice",
-            "value": "Baseball Practice",
-          },
-          {
-            "display": "Football Practice",
-            "value": "Football Practice",
+            "display": "Softbal",
+            "value": "Softbal",
           },
         ],
         textField: 'display',
         valueField: 'value',
-        okButtonLabel: 'OK',
-        cancelButtonLabel: 'CANCEL',
-        hintWidget: Text('Please choose one or more'),
+        okButtonLabel: 'Verder',
+        cancelButtonLabel: 'Stop',
+        hintWidget: Text('Kies minimaal één'),
         initialValue: _myActivities,
         onSaved: (value) {
           if (value == null) return;
@@ -373,7 +366,7 @@ class _SportHomeScreenState extends State<SportHomeScreen>
     );
   }
 
-  //kalender pop up
+  //Calender pop up
   void showDemoDialog({BuildContext context}) {
     showDialog<dynamic>(
       context: context,

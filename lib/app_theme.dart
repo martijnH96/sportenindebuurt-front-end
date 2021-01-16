@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-//applicatie kleuren en text hoofdstukken etc om alles via hier te gebruiken
+//application colors and text chapters etc to use all through here
 class AppTheme {
   AppTheme._();
 

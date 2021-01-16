@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 
+//sport data to put it inside cards.
 class SportListData {
   SportListData({
     this.imagePath = '',
