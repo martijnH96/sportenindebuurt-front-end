@@ -1,4 +1,4 @@
-import 'package:Sporten_in_de_buurt/screens/timeframeScreen.dart';
+import 'package:Sporten_in_de_buurt/screens/timeFrameScreen.dart';
 import 'package:flutter/material.dart';
 
 import 'sportSelectionScreen.dart';
@@ -9,7 +9,7 @@ class PreferenceScreen extends StatefulWidget {
 }
 
 class _PreferenceScreenState extends State<PreferenceScreen> {
-  var youreawakeblur = const AssetImage('assets/images/heythereblur.jpg');
+  var youreawakeblur = const AssetImage('assets/images/firstSporterBlur.jpg');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,12 +27,12 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
           RaisedButton(
               onPressed: () => Navigator.push(context,
           MaterialPageRoute(
-              builder: (context) => sportSelectionScreen())),
+              builder: (context) => SportSelectionScreen())),
           child: Text("Ga naar het selecteren van sporten"),),
           RaisedButton(
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(
-                    builder: (context) => timeSelectionScreen())),
+                    builder: (context) => TimeSelectionScreen())),
             child: Text("Ga naar het selecteren van tijd"),),
         ],
       ),

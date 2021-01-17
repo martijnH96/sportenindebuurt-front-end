@@ -32,12 +32,11 @@ class HttpService{
     return http.patch(hostname + url, headers: getHeaders(), body: jsonEncode(body));
   }
 
-
-
   Map getHeaders() => _token
       .map((token) => {
     HttpHeaders.contentTypeHeader: "application/json",
     HttpHeaders.acceptHeader: "application/json",
   })
-      .or({HttpHeaders.contentTypeHeader: "application/json"});
+      .or({HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.acceptHeader: "application/json"});
 }

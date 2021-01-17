@@ -3,31 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:adobe_xd/page_link.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:convert';
-// import 'package:http/http.dart' as http;
 
 import 'loginscreen.dart';
 import 'signupscreen.dart';
 
-final ImageProvider youreawake = const AssetImage('assets/images/heythere.jpg');
+final ImageProvider youreawake = const AssetImage('assets/images/firstSporter.jpg');
 final String sport = 'Sporten in de \nbuurt';
 final Color wit = const Color(0xffffffff);
 final HOME_URL = "/";
 
-class homescreen extends StatefulWidget {
+class Homescreen extends StatefulWidget {
   final VoidCallback login;
   final VoidCallback maakaccountaan;
-  homescreen({
+  Homescreen({
     Key key,
     this.login,
     this.maakaccountaan,
   }) : super(key: key);
 
   @override
-  _homescreenState createState() => _homescreenState();
+  _HomescreenState createState() => _HomescreenState();
 }
 
-class _homescreenState extends State<homescreen> {
+class _HomescreenState extends State<Homescreen> {
 
   final HttpService httpService = HttpService();
   @override

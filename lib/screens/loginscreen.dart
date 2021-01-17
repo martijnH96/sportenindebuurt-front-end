@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'package:Sporten_in_de_buurt/http/HttpService.dart';
 import 'package:Sporten_in_de_buurt/screens/preferenceScreen.dart';
-import 'package:Sporten_in_de_buurt/screens/sportSelectionScreen.dart';
-import 'package:Sporten_in_de_buurt/screens/timeframeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'signupscreen.dart';
 
 class Loginscreen extends StatelessWidget {
@@ -28,17 +27,11 @@ class LoginFormState extends State<LoginForm> {
   final HttpService httpService = HttpService();
   final _formKey = GlobalKey<FormState>();
   final loginController = TextEditingController();
-  final ImageProvider youreawakeblur;
+  final ImageProvider firstSporterBlur;
   final VoidCallback maakaccountaan;
-  final VoidCallback loginUser;
-  final VoidCallback wachtwoordInput;
-  final VoidCallback usernameInput;
   LoginFormState({
-    this.youreawakeblur = const AssetImage('assets/images/heythereblur.jpg'),
+    this.firstSporterBlur = const AssetImage('assets/images/firstSporterBlur.jpg'),
     this.maakaccountaan,
-    this.loginUser,
-    this.wachtwoordInput,
-    this.usernameInput,
   });
 
   String user;
@@ -63,7 +56,7 @@ class LoginFormState extends State<LoginForm> {
               labelStyle: TextStyle(
                 color: Colors.black,
               ),
-              labelText: "Username",
+              labelText: "E-mail",
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.black, width: 1.0),
               ),
@@ -85,7 +78,7 @@ class LoginFormState extends State<LoginForm> {
               labelStyle: TextStyle(
                 color: Colors.black,
               ),
-              labelText: "Password",
+              labelText: "Wachtwoord",
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.black, width: 1.0),
               ),
@@ -112,8 +105,8 @@ class LoginFormState extends State<LoginForm> {
                         textAlign: TextAlign.center,
                       ),
                     ]),
-              )),
-          // ),
+              )
+          ),
           SizedBox(
             width: double.infinity,
             height: 33,
@@ -126,19 +119,21 @@ class LoginFormState extends State<LoginForm> {
                   ),
                 );
                 if (_formKey.currentState.validate()) {
-                  if (!user.isEmpty && !password.isEmpty) {
+                  if (user.isNotEmpty && password.isNotEmpty) {
                     Map<String, String> login = {
                       "user": user,
                       "password": password
                     };
                     final response = await httpService.post("/login", login);
                     if (response.statusCode == 200) {
+                      var sporterID = jsonDecode(response.body);
+                      await FlutterSession().set("sporterID", sporterID.toString());
                       Scaffold.of(context).showSnackBar(
                         SnackBar(
-                          content: Text("Ingelogd op: " +
-                              jsonDecode(response.body)["user"]),
+                          content: Text("Succesvol ingelogd."),
                         ),
                       );
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -164,7 +159,7 @@ class LoginFormState extends State<LoginForm> {
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: youreawakeblur,
+            image: firstSporterBlur,
             fit: BoxFit.cover,
           ),
         ),
