@@ -9,7 +9,7 @@ class PreferenceScreen extends StatefulWidget {
 }
 
 class _PreferenceScreenState extends State<PreferenceScreen> {
-  var youreawakeblur = const AssetImage('assets/images/firstSporterBlur.jpg');
+  var firstSporterBlur = const AssetImage('assets/images/firstSporterBlur.jpg');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +17,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
       constraints: BoxConstraints.expand(),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: youreawakeblur,
+          image: firstSporterBlur,
           fit: BoxFit.cover,
         ),
       ),

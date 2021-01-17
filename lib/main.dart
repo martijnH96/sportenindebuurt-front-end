@@ -1,6 +1,7 @@
-import 'package:Sporten_in_de_buurt/screens/loginscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'screens/homescreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/': (context) => Loginscreen(),
+        '/': (context) => Homescreen(),
       },
     );
   }
